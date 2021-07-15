@@ -1,31 +1,12 @@
-var express = require('express')
-  , routes = require('./routes')
-//  , user = require('./routes/user')
-  , https = require('https')
-  , path = require('path');
+var express = require('express'),
+  routes = require('./routes'),
+  //  , user = require('./routes/user')
+  https = require('https'),
+  path = require('path');
 var session = require('express-session');
 var app = express();
-var mysql      = require('mysql');
-var bodyParser=require("body-parser");
-var connection = mysql.createConnection({
-              host     : 'localhost',
-              user     : 'root',
-              password : '',
-              database : 'racoonr'
-            });
- 
-connection.connect();
-
-connection.connect(function(err) {
-    console.log("Connected!");
-  var sql = "INSERT INTO events (EventName, Description, DateCreated, Author, Date, PostCode) VALUES ('Books needed for school library', 'Field School is looking for books for thier little library', '2008-11-11', 'Field Primary', '2008-11-11', 'NW33 0FF')";
-  connection.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log("1 record inserted");
-  });
-});
- 
-global.db = connection;
+var mysql = require('mysql');
+var bodyParser = require('body-parser');
 
 const port = 3000;
 
@@ -35,12 +16,50 @@ app.use('/css', express.static(__dirname + 'public/css'));
 app.use('/js', express.static(__dirname + 'public/js'));
 app.use('/img', express.static(__dirname + 'public/img'));
 
+var registration = require('./routes/registration.js');
+
 // set views
 app.set('views', './views');
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use('/registration', registration);
+
+app.use('/register', registration);
+
+app.post('/registration', function (req, res, next) {
+  inputData = {
+    FirstName: req.body.firstname,
+    LastName: req.body.lastname,
+    Email: req.body.email,
+    UserName: req.body.username,
+    City: req.body.city,
+    PostCode: req.body.postcode,
+    Country: req.body.country,
+    Password: req.body.password,
+    DateJoined: '2021-10-10',
+  };
+  // check unique email address
+  var sql = 'SELECT * FROM users WHERE email =?';
+  db.query(sql, [inputData.Email], function (err, data, fields) {
+    if (err) throw err;
+    if (data.length > 1) {
+      var msg = inputData.email_address + 'was already exist';
+    } else if (inputData.confirm_password != inputData.password) {
+      var msg = 'Password & Confirm Password is not Matched';
+    } else {
+      // save users data into database
+      var sql = 'INSERT INTO users SET ?';
+      db.query(sql, inputData, function (err, data) {
+        if (err) throw err;
+      });
+      var msg = 'Your are successfully registered';
+    }
+    res.render('register', { alertMsg: msg });
+  });
+});
 
 app.get('', (req, res) => {
   res.render('index');
