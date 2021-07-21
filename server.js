@@ -1,12 +1,22 @@
 var express = require('express'),
-  routes = require('./routes'),
-  //  , user = require('./routes/user')
+  flash = require('connect-flash'),
+  session = require('express-session'),
+  mysql = require('mysql'),
+  bodyParser = require('body-parser'),
+  passport = require('passport'),
+  User = require('./models/user'),
+  LocalStrategy = require('passport-local').Strategy,
+  env = require('dotenv').config(),
+  uuid = require('uuid').v4,
   https = require('https'),
+  bcrypt = require('bcrypt'),
   path = require('path');
-var session = require('express-session');
+
 var app = express();
-var mysql = require('mysql');
-var bodyParser = require('body-parser');
+
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 const port = 3000;
 
@@ -16,7 +26,43 @@ app.use('/css', express.static(__dirname + 'public/css'));
 app.use('/js', express.static(__dirname + 'public/js'));
 app.use('/img', express.static(__dirname + 'public/img'));
 
-var registration = require('./routes/registration.js');
+//require body parser to parse requests
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// For Passport
+app.use(
+  session({
+    secret: 'a nusery of raccoons',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  return res.redirect('/login');
+}
+
+// database connection
+var mysql = require('mysql');
+var bodyParser = require('body-parser');
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'racoonr',
+});
+
+connection.connect();
+
+db = connection;
 
 // set views
 app.set('views', './views');
@@ -25,11 +71,61 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/registration', registration);
+// INDEX
+app.get('/indexloggedin', isLoggedIn, (req, res, next) => {
+  return res.render('indexloggedin');
+});
+app.get('', (req, res) => {
+  res.render('index');
+});
 
-app.use('/register', registration);
+// BROWSE
+app.get('/browseloggedin', isLoggedIn, (req, res, next) => {
+  return res.render('browseloggedin');
+});
 
-app.post('/registration', function (req, res, next) {
+app.get('/browse', (req, res, next) => {
+  return res.render('browse');
+});
+
+app.get('/browsewanted', (req, res, next) => {
+  return res.render('browsewanted');
+});
+
+// LOGIN
+app.get('/login', (req, res, next) => {
+  return res.render('login');
+});
+
+app.post('/login', function (request, response, next) {
+  var email = request.body.email;
+  var password = request.body.password;
+  if (email && password) {
+    var hashed = db.query('SELECT Password FROM users WHERE Email = ?', [email]);
+    bcrypt.compare(password, hashed, function (err, res) {
+      if (err) {
+        // handle error
+      }
+      if (res) {
+        request.session.loggedin = true;
+        request.session.email = email;
+        response.redirect('/browse');
+      } else {
+        response.send('Passwords do not match');
+      }
+    });
+  } else {
+    response.redirect('/login?e=' + encodeURIComponent('Incorrect username or password'));
+    response.end();
+  }
+});
+
+// REGISTER
+app.get('/register', (req, res, next) => {
+  return res.render('register');
+});
+
+app.post('/register', async function (req, res, next) {
   inputData = {
     FirstName: req.body.firstname,
     LastName: req.body.lastname,
@@ -41,85 +137,100 @@ app.post('/registration', function (req, res, next) {
     Password: req.body.password,
     DateJoined: '2021-10-10',
   };
+
+  var user = inputData;
+
   // check unique email address
-  var sql = 'SELECT * FROM users WHERE email =?';
-  db.query(sql, [inputData.Email], function (err, data, fields) {
-    if (err) throw err;
-    if (data.length > 1) {
-      var msg = inputData.email_address + 'was already exist';
-    } else if (inputData.confirm_password != inputData.password) {
-      var msg = 'Password & Confirm Password is not Matched';
-    } else {
-      // save users data into database
-      var sql = 'INSERT INTO users SET ?';
-      db.query(sql, inputData, function (err, data) {
-        if (err) throw err;
-      });
-      var msg = 'Your are successfully registered';
+  db.query('SELECT * FROM users WHERE email =?', [inputData.Email], function (err, result) {
+    if (err) {
+      db.end();
+      return console.log(err);
     }
-    res.render('register', { alertMsg: msg });
+    if (!result.length) {
+      bcrypt.hash(user.Password, 10, function (err, hash) {
+        if (err) console.log(err);
+        user.Password = hash;
+        console.log(user.password);
+        db.query('INSERT INTO users SET ?', user, function (err) {
+          //saves non-hashed password
+          if (err) console.log(err);
+          console.log('successfull');
+          db.end();
+          res.redirect('/browse');
+        });
+      });
+    } else {
+      db.end();
+      console.log(`Email already exists`);
+      res.redirect('/events');
+    }
   });
 });
 
-app.get('', (req, res) => {
-  res.render('index');
+// ACCOUNT
+app.get('/account', isLoggedIn, (req, res, next) => {
+  return res.render('account');
 });
 
-app.get('/browse', (req, res) => {
-  res.render('browse');
+// ADD ITEM
+app.get('/additem', isLoggedIn, (req, res, next) => {
+  return res.render('additem');
 });
 
-app.get('/account', (req, res) => {
-  res.render('account');
+// ITEMS
+app.get('/offeritem', (req, res, next) => {
+  return res.render('offeritem');
 });
 
-app.get('/additem', (req, res) => {
-  res.render('additem');
+app.get('/wanteditem', (req, res, next) => {
+  return res.render('wanteditem');
 });
 
-app.get('/browsewanted', (req, res) => {
-  res.render('browsewanted');
+// COMMUNITIES
+app.get('/community', (req, res, next) => {
+  return res.render('community');
 });
 
-app.get('/communities', (req, res) => {
-  res.render('communities');
+app.get('/communities', (req, res, next) => {
+  return res.render('communities');
 });
 
-app.get('/community', (req, res) => {
-  res.render('community');
+app.get('/communityform', isLoggedIn, (req, res, next) => {
+  return res.render('communityform');
 });
 
-app.get('/communityform', (req, res) => {
-  res.render('communityform');
+// EVENTS
+app.get('/eventpage', (req, res, next) => {
+  return res.render('eventpage');
 });
 
-app.get('/eventpage', (req, res) => {
-  res.render('eventpage');
+app.get('/events', (req, res, next) => {
+  return res.render('events');
 });
 
-app.get('/events', (req, res) => {
-  res.render('events');
-});
+const { response } = require('express');
+// Models
+var models = require('./models');
 
-app.get('/indexloggedin', (req, res) => {
-  res.render('indexloggedin');
-});
+// Routes
+var authRoute = require('./routes/auth.js')(app, passport);
 
-app.get('/login', (req, res) => {
-  res.render('login');
-});
+//load passport strategies
+require('./config/passport/passport.js')(passport, models.user);
 
-app.get('/offeritem', (req, res) => {
-  res.render('offeritem');
-});
+//Sync Database
+models.sequelize
+  .sync()
+  .then(function () {
+    console.log('Nice! Database looks fine');
+  })
+  .catch(function (err) {
+    console.log(err, 'Something went wrong with the Database Update!');
+  });
 
-app.get('/register', (req, res) => {
-  res.render('register');
-});
-
-app.get('/wanteditem', (req, res) => {
-  res.render('wanteditem');
-});
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
 app.listen(port, () => {
   console.log(`Express server listening on port ${port}!`);
