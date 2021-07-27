@@ -1,57 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Re-Share</title>
-	<link rel="shortcut icon" href="img/favicon.ico">
-	<!-- Bootstrap 4.5 CSS -->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<!-- Style CSS -->
-	<link rel="stylesheet" href="css/style.css">
-	<!-- Google Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet">
-</head>
+	<%- include("partials/head") -%>
 
-<!-- Navigation -->
-<nav class="navbar bg-light navbar-light navbar-expand-lg">
-	<div class="container">
-
-		<a href="index.html" class="navbar-brand"><img src="img/raccoon.png" alt="Logo" title="Logo"></a>
-
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<div class="collapse navbar-collapse" id="navbarResponsive">
-			<ul class="navbar-nav">
-				<li class="nav-item"><a href="browse.html" class="nav-link active">Browse</a></li>
-				<li class="nav-item"><a href="indexloggedin.html" class="nav-link">About</a></li>
-				<li class="nav-item"><a href="events.html" class="nav-link">Events</a></li>
-				<li class="nav-item"><a href="communities.html" class="nav-link">Communities</a></li>
-				<li class="nav-item"><a href="account.html" class="nav-link">Den</a></li>
-			</ul>
-		</div>
-		<div>
-			<ul class="navbar-nav">
-				<li class="nav-item"><a href="login.html" class="nav-link"
-						style="font-weight: 500; font-size: 1.1rem;">Logout</a></li>
-			</ul>
-		</div>
-	</div>
-</nav>
-<!-- End Navigation -->
+	<body>
+		<%- include("partials/navigation", {page:"browse"}); -%>
 
 <!-- Navigation -->
 <nav class="subnavbar navbar-expand-lg">
 
 	<ul class="nav nav-tabs">
-		<li class="nav-item"><a class="nav-link" aria-current="page" href="browse.html"">Offers</a>
+		<li class="nav-item"><a class="nav-link" aria-current="page" href="/browse">Offers</a>
 	</li>
 	<li class=" nav-item">
-				<a class="nav-link active" href="browsewanted.html"">Wanted</a>
+				<a class="nav-link active" href="/browsewanted">Wanted</a>
 	</li>
 	</ul>
 </nav>
@@ -73,7 +35,7 @@
 										can pick up for anywhere in the local area in the evening or further away at the
 										weekend.
 										Thank you in advance, I love this community</p>
-									<p><a href="messages.html" class="buy-now btn btn-sm btn-primary">Send a
+									<p><a href="/login" class="buy-now btn btn-sm btn-primary">Log in to send a
 											message</a></p>
 								</div>
 							</div>
@@ -118,7 +80,7 @@
 														width="40"><textarea
 														class="form-control ml-1 shadow-none textarea"></textarea></div>
 												<div class="mt-2 text-right"><button
-														class="btn btn-primary btn-sm shadow-none" type="button">Post
+														class="btn btn-primary btn-sm shadow-none" type="button">Log in to post
 														comment</button><button
 														class="btn btn-outline-primary btn-sm ml-1 shadow-none"
 														type="button">Cancel</button></div>

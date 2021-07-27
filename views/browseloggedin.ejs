@@ -1,60 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Re-Share</title>
-	<link rel="shortcut icon" href="img/favicon.ico">
-	<!-- Bootstrap 4.5 CSS -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
-	<!-- Style CSS -->
-	<link rel="stylesheet" href="./css/style.css">
-	<!-- Google Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet">
-</head>
+	<%- include("partials/head") -%>
 
-<body>
+	<body>
+	  <%- include("partials/navigationloggedin", {page:"browse"}) -%>
 
-
-	<!-- Navigation -->
-	<nav class="navbar bg-light navbar-light navbar-expand-lg">
-		<div class="container">
-
-			<a href="/indexloggedin" class="navbar-brand"><img src="img/raccoon.png" alt="Logo" title="Logo"></a>
-
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-
-			<div class="collapse navbar-collapse" id="navbarResponsive">
-				<ul class="navbar-nav">
-					<li class="nav-item"><a href="/browse" class="nav-link active">Browse</a></li>
-					<li class="nav-item"><a href="/indexloggedin" class="nav-link">About</a></li>
-					<li class="nav-item"><a href="/events" class="nav-link">Events</a></li>
-					<li class="nav-item"><a href="/communities" class="nav-link">Communities</a></li>
-					<li class="nav-item"><a href="/account" class="nav-link">Den</a></li>
-				</ul>
-			</div>
-			<div>
-				<ul class="navbar-nav">
-					<li class="nav-item"><a href="/login" class="nav-link"
-							style="font-weight: 500; font-size: 1.1rem;">Logout</a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-	<!-- End Navigation -->
-	<!-- Navigation -->
+		<!-- Navigation -->
 	<nav class="subnavbar navbar-light navbar-expand-lg">
 
 		<ul class="nav nav-tabs">
 			<li class="nav-item">
-				<a class="nav-link active" aria-current="page" href="/browse">Offers</a>
+				<a class="nav-link active" aria-current="page" href="/browseloggedin">Offers</a>
 			</li>
 			<li class=" nav-item">
-				<a class="nav-link" href="/browsewanted">Wanted</a>
+				<a class="nav-link" href="/browsewantedloggedin">Wanted</a>
 			</li>
 		</ul>
 
@@ -108,11 +68,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/chair.jpg" alt="Image placeholder"
+										<a href="/offeritemloggedin"><img src="img/test/chair.jpg" alt="Image placeholder"
 												class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Chair</a></h3>
+										<h3><a href="/offeritemloggedin">Chair</a></h3>
 										<p class="mb-0">Brand new, just doesn't fit in our flat</p>
 									</div>
 								</div>
@@ -120,11 +80,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/books.jpg" alt="Image placeholder"
+										<a href="/offeritemloggedin"><img src="img/test/books.jpg" alt="Image placeholder"
 												class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Books</a></h3>
+										<h3><a href="/offeritemloggedin">Books</a></h3>
 										<p class="mb-0">Used books I don't want to read again</p>
 									</div>
 								</div>
@@ -132,11 +92,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/food.jpg" alt="Image placeholder"
+										<a href="/offeritemloggedin"><img src="img/test/food.jpg" alt="Image placeholder"
 												class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Bags of food</a></h3>
+										<h3><a href="/offeritemloggedin">Bags of food</a></h3>
 										<p class="mb-0">Bought for anyone who really needs them</p>
 									</div>
 								</div>
@@ -145,11 +105,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/test.jpg" alt="Image placeholder"
+										<a href="/offeritemloggedin"><img src="img/test/test.jpg" alt="Image placeholder"
 												class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">T-Shirt</a></h3>
+										<h3><a href="/offeritemloggedin">T-Shirt</a></h3>
 										<p class="mb-0">Worn but still has more life in it</p>
 									</div>
 								</div>
@@ -157,11 +117,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/cushions.jpg"
+										<a href="/offeritemloggedin"><img src="img/test/cushions.jpg"
 												alt="Image placeholder" class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Cushions</a></h3>
+										<h3><a href="/offeritemloggedin">Cushions</a></h3>
 										<p class="mb-0">Want someone else to enjoy</p>
 									</div>
 								</div>
@@ -169,11 +129,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/football.jpg"
+										<a href="/offeritemloggedin"><img src="img/test/football.jpg"
 												alt="Image placeholder" class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Football</a></h3>
+										<h3><a href="/offeritemloggedin">Football</a></h3>
 										<p class="mb-0">Was my son's, now he has a new one</p>
 									</div>
 								</div>
@@ -181,11 +141,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/eggs.jpg" alt="Image placeholder"
+										<a href="/offeritemloggedin"><img src="img/test/eggs.jpg" alt="Image placeholder"
 												class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Eggs</a></h3>
+										<h3><a href="/offeritemloggedin">Eggs</a></h3>
 										<p class="mb-0">I accidentally bought too many so I am giving
 											away a
 											dozen</p>
@@ -195,11 +155,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/seedlings.jpg"
+										<a href="/offeritemloggedin"><img src="img/test/seedlings.jpg"
 												alt="Image placeholder" class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Seedlings</a></h3>
+										<h3><a href="/offeritemloggedin">Seedlings</a></h3>
 										<p class="mb-0">From my mum's garden</p>
 									</div>
 								</div>
@@ -208,11 +168,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/teddy.jpg" alt="Image placeholder"
+										<a href="/offeritemloggedin"><img src="img/test/teddy.jpg" alt="Image placeholder"
 												class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Teddy bear</a></h3>
+										<h3><a href="/offeritemloggedin">Teddy bear</a></h3>
 										<p class="mb-0">Finding a new home</p>
 									</div>
 								</div>
@@ -220,11 +180,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/table.jpg" alt="Image placeholder"
+										<a href="/offeritemloggedin"><img src="img/test/table.jpg" alt="Image placeholder"
 												class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Table</a></h3>
+										<h3><a href="/offeritemloggedin">Table</a></h3>
 										<p class="mb-0">Used, we are moving so we need a bigger one</p>
 									</div>
 								</div>
@@ -232,11 +192,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/rabbit.jpg" alt="Image placeholder"
+										<a href="/offeritemloggedin"><img src="img/test/rabbit.jpg" alt="Image placeholder"
 												class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Fluffy rabbit </a></h3>
+										<h3><a href="/offeritemloggedin">Fluffy rabbit </a></h3>
 										<p class="mb-0">I made this to give away to someone who needs a
 											little something
 											for a new baby</p>
@@ -247,11 +207,11 @@
 							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 									<figure class="block-4-image">
-										<a href="/offeritem"><img src="img/test/tv.jpg" alt="Image placeholder"
+										<a href="/offeritemloggedin"><img src="img/test/tv.jpg" alt="Image placeholder"
 												class="img-fluid" loading="lazy"></a>
 									</figure>
 									<div class="block-4-text p-4">
-										<h3><a href="/offeritem">Old TV</a></h3>
+										<h3><a href="/offeritemloggedin">Old TV</a></h3>
 										<p class="mb-0">Doesn't work but might be useful to someone</p>
 									</div>
 								</div>

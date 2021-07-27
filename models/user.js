@@ -1,9 +1,13 @@
 module.exports = function (sequelize, Sequelize) {
   var User = sequelize.define('user', {
-    UserName: {
+    UserID: {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
+
+    //UserName: {
+    //type: Sequelize.STRING,
+    //},
 
     FirstName: {
       type: Sequelize.STRING,
