@@ -23,6 +23,10 @@
       <div class="site-wrap bg-light">
         <div class="site-section">
           <div class="container rounded border border-primary">
+            <br />
+            <div class="alert alert-success" role="alert">
+              You have successfully added a new item
+            </div>
             <div class="card-body media align-items-center">
               <img
                 src="img/avatars/book.jpg"
@@ -44,27 +48,27 @@
               <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
             </div>
 
-            <form action="additem" method="POST">
+            <form>
               <div class="form-group">
                 <label class="form-label">Type</label>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Offering</td>
-                      <td>
-                        <input type="radio" name="type" value="0" checked />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Offering</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Wanted</td>
-                      <td>
-                        <input type="radio" name="type" value="1" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Wanted</span>
                   </label>
                 </div>
               </div>
@@ -87,141 +91,132 @@
                 <label class="form-label">Category</label>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Books</td>
-                      <td>
-                        <input type="radio" name="type" value="books" checked />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Books</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Clothing</td>
-                      <td>
-                        <input type="radio" name="type" value="clothing" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Clothing</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Electronics</td>
-                      <td>
-                        <input type="radio" name="type" value="electronics" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Electronics</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Food</td>
-                      <td>
-                        <input type="radio" name="type" value="food" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Foods</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Home</td>
-                      <td>
-                        <input type="radio" name="type" value="home" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Home</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Garden</td>
-                      <td>
-                        <input type="radio" name="type" value="garden" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Garden</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Sports</td>
-                      <td>
-                        <input type="radio" name="type" value="sports" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Sports</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Toys</td>
-                      <td>
-                        <input type="radio" name="type" value="toys" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Toys</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Toiletries</td>
-                      <td>
-                        <input type="radio" name="type" value="toiletries" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Toiletries</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Other</td>
-                      <td>
-                        <input type="radio" name="type" value="other" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Others</span>
                   </label>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="form-label">Collection</label>
-
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Pick-up</td>
-                      <td>
-                        <input type="radio" name="type" value="0" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Pick-up</span>
                   </label>
                 </div>
                 <div class="form-group px-5">
                   <label class="switcher">
-                    <tr>
-                      <td>Local delivery</td>
-                      <td>
-                        <input type="radio" name="type" value="1" />
-                      </td>
-                    </tr>
+                    <input type="checkbox" class="switcher-input" />
+                    <span class="switcher-indicator">
+                      <span class="switcher-yes"></span>
+                      <span class="switcher-no"></span>
+                    </span>
+                    <span class="switcher-label">Local delivery</span>
                   </label>
                 </div>
               </div>
               <div class="text-right mt-3 pb-5">
                 <button type="button" class="btn btn-primary">Save</button>&nbsp;
-                <button
-                  action="action"
-                  type="button"
-                  class="btn btn-default"
-                  value="Back"
-                  onclick="history.go(-1);"
-                >
-                  Cancel
-                </button>
+                <button type="button" class="btn btn-default">Cancel</button>
               </div>
             </form>
           </div>

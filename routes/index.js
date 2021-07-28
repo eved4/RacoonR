@@ -30,7 +30,7 @@ router.use('/', communities_routes);
 var communityform_routes = require('./communityform_routes');
 router.use('/', communityform_routes);
 
-var eventpage_routes = require('./eventpage_routes');
+var eventpage_routes =/ require('./eventpage_routes');
 router.use('/', eventpage_routes);
 
 var events_routes = require('./events_routes');

@@ -246,6 +246,52 @@ app.get('/additem', (req, res, next) => {
   return res.render('additem');
 });
 
+app.get('/additemsuccess', (req, res, next) => {
+  return res.render('additemsuccess');
+});
+
+app.post('/additem', async function (req, res, next) {
+  var inputData = {
+    FirstName: req.body.firstname,
+    LastName: req.body.lastname,
+    Email: req.body.email,
+    UserName: req.body.username,
+    City: req.body.city,
+    PostCode: req.body.postcode,
+    Country: req.body.country,
+    Password: req.body.password,
+    DateJoined: '2021-10-10',
+  };
+
+  var user = inputData;
+
+  // check unique email address
+  db.query('SELECT * FROM users WHERE email =?', [inputData.Email], function (err, result) {
+    if (err) {
+      db.end();
+      return console.log(err);
+    }
+    if (!result.length) {
+      bcrypt.hash(user.Password, 10, function (err, hash) {
+        if (err) console.log(err);
+        user.Password = hash;
+        console.log(user.password);
+        db.query('INSERT INTO users SET ?', user, function (err) {
+          //saves non-hashed password
+          if (err) console.log(err);
+          console.log('successfull');
+          db.end();
+          res.redirect('/browse');
+        });
+      });
+    } else {
+      db.end();
+      console.log(`Email already exists`);
+      res.redirect('/events');
+    }
+  });
+});
+
 // ITEMS
 app.get('/offeritem', (req, res, next) => {
   return res.render('offeritem');
