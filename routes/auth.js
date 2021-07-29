@@ -5,20 +5,6 @@ var connection = require('../lib/db');
 
 // TODO: Figure out where to put this|:
 
-const hashPassword = async (password, saltRounds = 10) => {
-  try {
-    // Generate a salt
-    const salt = await bcrypt.genSalt(saltRounds);
-    // Hash password
-    return await bcrypt.hash(password, salt);
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Return null if there is an error
-  return null;
-};
-
 //display login page
 router.get('/', function (req, res, next) {
   // render to views/user/add.ejs

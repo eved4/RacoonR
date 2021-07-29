@@ -14,16 +14,12 @@ module.exports = function (passport) {
   // used to serialize the user for the session
 
   passport.serializeUser(function (user, done) {
-    console.log('>>>SERIALIZER<<<');
-    console.log(user);
     done(null, user.UserID);
   });
 
   // used to deserialize the user
   passport.deserializeUser(function (id, done) {
     connection.query('SELECT * FROM users WHERE UserID = ? ', [id], function (err, rows) {
-      console.log('>>>DE-SERIALIZER<<<');
-      console.log(rows[0]);
       done(err, rows[0]);
     });
   });

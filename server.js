@@ -250,46 +250,25 @@ app.get('/additemsuccess', (req, res, next) => {
   return res.render('additemsuccess');
 });
 
-app.post('/additem', async function (req, res, next) {
+app.post('/additem', isLoggedIn, async function (req, res, next) {
+  console.log(req.session);
+  console.log(req.session.passport.user);
+  console.log(req.session.name);
   var inputData = {
-    FirstName: req.body.firstname,
-    LastName: req.body.lastname,
-    Email: req.body.email,
-    UserName: req.body.username,
-    City: req.body.city,
-    PostCode: req.body.postcode,
-    Country: req.body.country,
-    Password: req.body.password,
-    DateJoined: '2021-10-10',
+    Type: req.body.type,
+    Title: req.body.title,
+    Description: req.body.description,
+    Category: req.body.category,
+    Collection: req.body.collection,
+    UserID: req.session.passport.user,
+    Image: 'image',
   };
 
-  var user = inputData;
-
   // check unique email address
-  db.query('SELECT * FROM users WHERE email =?', [inputData.Email], function (err, result) {
-    if (err) {
-      db.end();
-      return console.log(err);
-    }
-    if (!result.length) {
-      bcrypt.hash(user.Password, 10, function (err, hash) {
-        if (err) console.log(err);
-        user.Password = hash;
-        console.log(user.password);
-        db.query('INSERT INTO users SET ?', user, function (err) {
-          //saves non-hashed password
-          if (err) console.log(err);
-          console.log('successfull');
-          db.end();
-          res.redirect('/browse');
-        });
-      });
-    } else {
-      db.end();
-      console.log(`Email already exists`);
-      res.redirect('/events');
-    }
-  });
+  db.query(
+    `INSERT INTO items (UserID, Type, Title, Description, Category, Collection, DateAdded, ImagePath) VALUES ("${inputData.UserID}", "${inputData.Type}", "${inputData.Title}", "${inputData.Description}","${inputData.Category}","${inputData.Collection}",NOW(), "${inputData.Image}")`
+  );
+  res.redirect('browseloggedin');
 });
 
 // ITEMS

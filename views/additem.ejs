@@ -52,7 +52,7 @@
                     <tr>
                       <td>Offering</td>
                       <td>
-                        <input type="radio" name="type" value="0" checked />
+                        <input type="radio" name="type" value="offering" checked />
                       </td>
                     </tr>
                   </label>
@@ -62,7 +62,7 @@
                     <tr>
                       <td>Wanted</td>
                       <td>
-                        <input type="radio" name="type" value="1" />
+                        <input type="radio" name="type" value="wanted" />
                       </td>
                     </tr>
                   </label>
@@ -71,7 +71,12 @@
               <div class="card-body">
                 <div class="form-group">
                   <label class="form-label">Title</label>
-                  <input type="text" class="form-control mb-1" placeholder="e.g. box of food" />
+                  <input
+                    type="text"
+                    class="form-control mb-1"
+                    placeholder="e.g. box of food"
+                    name="title"
+                  />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Description</label>
@@ -79,6 +84,7 @@
                     class="form-control"
                     rows="3"
                     placeholder="Type your message here..."
+                    name="description"
                   ></textarea>
                 </div>
               </div>
@@ -90,7 +96,7 @@
                     <tr>
                       <td>Books</td>
                       <td>
-                        <input type="radio" name="type" value="books" checked />
+                        <input type="radio" name="category" value="books" checked />
                       </td>
                     </tr>
                   </label>
@@ -100,7 +106,7 @@
                     <tr>
                       <td>Clothing</td>
                       <td>
-                        <input type="radio" name="type" value="clothing" />
+                        <input type="radio" name="category" value="clothing" />
                       </td>
                     </tr>
                   </label>
@@ -110,7 +116,7 @@
                     <tr>
                       <td>Electronics</td>
                       <td>
-                        <input type="radio" name="type" value="electronics" />
+                        <input type="radio" name="category" value="electronics" />
                       </td>
                     </tr>
                   </label>
@@ -120,7 +126,7 @@
                     <tr>
                       <td>Food</td>
                       <td>
-                        <input type="radio" name="type" value="food" />
+                        <input type="radio" name="category" value="food" />
                       </td>
                     </tr>
                   </label>
@@ -130,7 +136,7 @@
                     <tr>
                       <td>Home</td>
                       <td>
-                        <input type="radio" name="type" value="home" />
+                        <input type="radio" name="category" value="home" />
                       </td>
                     </tr>
                   </label>
@@ -140,7 +146,7 @@
                     <tr>
                       <td>Garden</td>
                       <td>
-                        <input type="radio" name="type" value="garden" />
+                        <input type="radio" name="category" value="garden" />
                       </td>
                     </tr>
                   </label>
@@ -150,7 +156,7 @@
                     <tr>
                       <td>Sports</td>
                       <td>
-                        <input type="radio" name="type" value="sports" />
+                        <input type="radio" name="category" value="sports" />
                       </td>
                     </tr>
                   </label>
@@ -160,7 +166,7 @@
                     <tr>
                       <td>Toys</td>
                       <td>
-                        <input type="radio" name="type" value="toys" />
+                        <input type="radio" name="category" value="toys" />
                       </td>
                     </tr>
                   </label>
@@ -170,7 +176,7 @@
                     <tr>
                       <td>Toiletries</td>
                       <td>
-                        <input type="radio" name="type" value="toiletries" />
+                        <input type="radio" name="category" value="toiletries" />
                       </td>
                     </tr>
                   </label>
@@ -180,7 +186,7 @@
                     <tr>
                       <td>Other</td>
                       <td>
-                        <input type="radio" name="type" value="other" />
+                        <input type="radio" name="category" value="other" />
                       </td>
                     </tr>
                   </label>
@@ -195,7 +201,7 @@
                     <tr>
                       <td>Pick-up</td>
                       <td>
-                        <input type="radio" name="type" value="0" />
+                        <input type="radio" name="collection" value="pickup" checked />
                       </td>
                     </tr>
                   </label>
@@ -205,23 +211,28 @@
                     <tr>
                       <td>Local delivery</td>
                       <td>
-                        <input type="radio" name="type" value="1" />
+                        <input type="radio" name="collection" value="localdelivery" />
                       </td>
                     </tr>
                   </label>
                 </div>
               </div>
-              <div class="text-right mt-3 pb-5">
-                <button type="button" class="btn btn-primary">Save</button>&nbsp;
-                <button
+              <div class="text-center mt-3 pb-5">
+                <input
+                  class="btn btn-sm btn-primary btn-block"
+                  style="width: 50%; font-size: large"
+                  style="background-color: #199e0f; border: none"
+                  type="submit"
+                  value="Save"
+                />
+                <input
                   action="action"
-                  type="button"
-                  class="btn btn-default"
-                  value="Back"
+                  class="btn btn-sm btn-secondary btn-block"
+                  style="width: 50%; font-size: large"
+                  style="background-color: #199e0f; border: none"
+                  value="Cancel"
                   onclick="history.go(-1);"
-                >
-                  Cancel
-                </button>
+                />
               </div>
             </form>
           </div>
