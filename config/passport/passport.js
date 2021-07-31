@@ -50,19 +50,33 @@ module.exports = function (passport) {
               PostCode: req.body.postcode,
               Country: req.body.country,
               Password: req.body.password,
-              DateJoined: '2021-10-10', // TODO: Change this to current data, I'm sure it's possible
+              DateJoined: new Date(),
               //username: username,
               //password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
             };
+
             bcrypt.hash(newUserMysql.Password, 10, function (err, hash) {
               if (err) console.log(err);
               else {
                 newUserMysql.Password = hash;
                 var insertQuery = 'INSERT INTO users SET ?';
-
                 connection.query(insertQuery, newUserMysql, function (err, rows) {
                   //newUserMysql.id = rows.UserName;
-                  return done(null, rows[0]);
+                  if (err) return done(err);
+                  else {
+                    connection.query(
+                      'SELECT * FROM users WHERE Email = ?',
+                      [email],
+                      function (err, rows, fields) {
+                        if (err) return done(err);
+                        if (rows.length) {
+                          console.log('>>>RETURNING USER<<<');
+                          console.log(rows[0]);
+                          return done(null, rows[0]);
+                        }
+                      }
+                    );
+                  }
                 });
               }
             });

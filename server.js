@@ -84,20 +84,37 @@ app.get('', (req, res) => {
 });
 
 // BROWSE
+
 app.get('/browseloggedin', isLoggedIn, (req, res, next) => {
-  return res.render('browseloggedin');
+  var sql = "SELECT * FROM items WHERE Type='offering'";
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browseloggedin', { title: 'Item List', itemData: data });
+  });
 });
 
 app.get('/browse', (req, res, next) => {
-  return res.render('browse');
+  var sql = "SELECT * FROM items WHERE Type='offering'";
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browse', { title: 'Item List', itemData: data });
+  });
 });
 
 app.get('/browsewanted', (req, res, next) => {
-  return res.render('browsewanted');
+  var sql = "SELECT * FROM items WHERE Type='wanted'";
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsewanted', { title: 'User List', itemData: data });
+  });
 });
 
-app.get('/browsewantedloggedin', (req, res, next) => {
-  return res.render('browsewantedloggedin');
+app.get('/browsewantedloggedin', isLoggedIn, (req, res, next) => {
+  var sql = "SELECT * FROM items WHERE Type='wanted'";
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsewantedloggedin', { title: 'Item List', itemData: data });
+  });
 });
 
 // LOGIN
@@ -161,7 +178,7 @@ app.get('/register', (req, res, next) => {
 app.post(
   '/register',
   passport.authenticate('local-signup', {
-    successRedirect: '/browse',
+    successRedirect: '/browseloggedin',
     failureRedirect: '/register',
     failureFlash: true,
   }),
@@ -242,18 +259,18 @@ app.get('/logout', function (req, res) {
 });
 
 // ADD ITEM
-app.get('/additem', (req, res, next) => {
+app.get('/additem', isLoggedIn, (req, res, next) => {
   return res.render('additem');
 });
 
-app.get('/additemsuccess', (req, res, next) => {
+app.get('/additemsuccess', isLoggedIn, (req, res, next) => {
   return res.render('additemsuccess');
 });
 
 app.post('/additem', isLoggedIn, async function (req, res, next) {
-  console.log(req.session);
-  console.log(req.session.passport.user);
-  console.log(req.session.name);
+  let sampleFile;
+  let uploadPath;
+
   var inputData = {
     Type: req.body.type,
     Title: req.body.title,
@@ -261,12 +278,17 @@ app.post('/additem', isLoggedIn, async function (req, res, next) {
     Category: req.body.category,
     Collection: req.body.collection,
     UserID: req.session.passport.user,
-    Image: 'image',
+    Image: req.body.img,
   };
 
-  // check unique email address
+  sampleFile = inputData.Image;
+  uploadPath = '/img/test/' + sampleFile;
+
+  console.log(sampleFile);
+  console.log(uploadPath);
+
   db.query(
-    `INSERT INTO items (UserID, Type, Title, Description, Category, Collection, DateAdded, ImagePath) VALUES ("${inputData.UserID}", "${inputData.Type}", "${inputData.Title}", "${inputData.Description}","${inputData.Category}","${inputData.Collection}",NOW(), "${inputData.Image}")`
+    `INSERT INTO items (UserID, Type, Title, Description, Category, Collection, DateAdded, ImagePath) VALUES ("${inputData.UserID}", "${inputData.Type}", "${inputData.Title}", "${inputData.Description}","${inputData.Category}","${inputData.Collection}",NOW(), "${uploadPath}")`
   );
   res.redirect('browseloggedin');
 });
@@ -280,11 +302,11 @@ app.get('/wanteditem', (req, res, next) => {
   return res.render('wanteditem');
 });
 
-app.get('/offeritemloggedin', (req, res, next) => {
+app.get('/offeritemloggedin', isLoggedIn, (req, res, next) => {
   return res.render('offeritemloggedin');
 });
 
-app.get('/wanteditemloggedin', (req, res, next) => {
+app.get('/wanteditemloggedin', isLoggedIn, (req, res, next) => {
   return res.render('wanteditemloggedin');
 });
 
@@ -297,15 +319,15 @@ app.get('/communities', (req, res, next) => {
   return res.render('communities');
 });
 
-app.get('/communityform', (req, res, next) => {
+app.get('/communityform', isLoggedIn, (req, res, next) => {
   return res.render('communityform');
 });
 
-app.get('/communityloggedin', (req, res, next) => {
+app.get('/communityloggedin', isLoggedIn, (req, res, next) => {
   return res.render('communityloggedin');
 });
 
-app.get('/communitiesloggedin', (req, res, next) => {
+app.get('/communitiesloggedin', isLoggedIn, (req, res, next) => {
   return res.render('communitiesloggedin');
 });
 
@@ -318,17 +340,18 @@ app.get('/events', (req, res, next) => {
   return res.render('events');
 });
 
-app.get('/eventpageloggedin', (req, res, next) => {
+app.get('/eventpageloggedin', isLoggedIn, (req, res, next) => {
   return res.render('eventpageloggedin');
 });
 
-app.get('/eventsloggedin', (req, res, next) => {
+app.get('/eventsloggedin', isLoggedIn, (req, res, next) => {
   return res.render('eventsloggedin');
 });
 
 const { response } = require('express');
 // Models
 var models = require('./models');
+// const { regexp } = require('sequelize/types/lib/operators');
 
 //load passport strategies
 require('./config/passport/passport.js')(passport, models.user);

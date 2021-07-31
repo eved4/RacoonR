@@ -23,28 +23,11 @@
       <div class="site-wrap bg-light">
         <div class="site-section">
           <div class="container rounded border border-primary">
-            <div class="card-body media align-items-center">
-              <img
-                src="img/avatars/book.jpg"
-                alt=""
-                class="d-block ui-w-80 border"
-                width="320"
-                height="320"
-              />
-            </div>
-            <div class="media-body ml-4">
-              <label class="btn btn-outline-primary">
-                Upload photo
-                <input type="file" class="account-settings-fileinput" />
-              </label>
-              &nbsp;
-              <br />
-              <button type="button" class="btn btn-secondary md-btn-flat">Set</button>
-
-              <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
-            </div>
-
             <form action="additem" method="POST">
+              <div class="form-group">
+                <label class="form-label">Image - only needed for offered items</label>
+                <input type="file" class="form-control mb-1" name="img" accept="image" />
+              </div>
               <div class="form-group">
                 <label class="form-label">Type</label>
                 <div class="form-group px-5">

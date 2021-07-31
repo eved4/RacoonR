@@ -1,26 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include("partials/head") -%>
 
-  <body>
-    
-    <%- include("partials/navigation", {page:"browse"}); -%>
+	<%- include("partials/head") -%>
 
-      <!-- Navigation -->
-      <nav class="subnavbar navbar-expand-lg">
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/browse">Offers</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="/browsewanted">Wanted</a>
-          </li>
-        </ul>
-      </nav>
+	<body>
+	  <%- include("partials/navigation", {page:"browse"}); -%>
 
-      <!-- End Navigation -->
 
-     
+	<!-- Navigation -->
+	<nav class="subnavbar navbar-light navbar-expand-lg">
+
+		<ul class="nav nav-tabs">
+			<li class="nav-item">
+				<a class="nav-link active" aria-current="page" href="/browse">Offers</a>
+			</li>
+			<li class=" nav-item">
+				<a class="nav-link" href="/browsewanted">Wanted</a>
+			</li>
+		</ul>
+
+	</nav>
+
+	<!-- End Navigation -->
+
+
+	<div class="table-data">
+		<h2>Display Data using Node.js & MySQL</h2>
+			<table border="1">
+				<tr>
+					<th></th>
+					<th>Title</th>
+					<th>Description</th>
+					<th>Category</th>
+										<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+				
+				<%
+				if(itemData.length!=0){
+				var i=1;
+				itemData.forEach(function(data){
+				%>
+				<tr>
+					<td><%=i; %></td>
+					<td><%=data.Title %></td>
+					<td><%=data.Description %></td>
+					<td><%=data.Category %></td>
+									<td><a href="/users/edit/<%=data.id%>">Edit</a></td>
+					<td><a href="/users/delete/<%=data.id%>">Delete</a></td>
+				</tr>
+				<%  i++; }) %>
+				<% } else{ %>
+					<tr>
+						<td colspan="7">No Data Found</td>
+					</tr>
+				<% } %>
+			</table>
+			</div>
+
+
+
 	<div class=" site-wrap bg-light">
 		<div class="site-section">
 			<div class="container">
@@ -30,11 +69,13 @@
 							<div class="col-md-12 mb-5">
 
 								<div class="col-12 text-center mt-2 bg-light">
-									<h1 class="text-dark">Wanted</h1>
+									<h1 class="text-dark">Offers</h1>
 									<div class="border-top border-primary d-none d-lg-block w-25 mx-auto my-3">
 									</div>
-									<p class="lead">Browse items that others in your community are searching for and see if you
-                    can help them out</p>
+									<p class="lead">Browse items in your community that are being
+										donated
+										and give them
+										a new home</p>
 								</div>
 
 								<div class="input-group  py-3">
@@ -60,33 +101,37 @@
 								</div>
 							</div>
 						</div>
-						<div class="row mb-5">
-
-							<%
-							if(itemData.length!=0){
-							var i=1;
-							itemData.forEach(function(data){
-							%>
-							
-							
-								  <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-									<div class="block-4 text-center border">
-									  <div class="block-4-text p-4">
-										<h3><a href="/wanteditem"><%=data.Title %> </a></h3>
-																			<br />
-										<p class="mb-0"><%=data.Description %></p>
-										<p class="mb-0"></p><%=data.Category %></p>
-									  </div>
-									</div>
-								  </div>
-											   
-										  <%  i++; }) %>
-							<% } else{ %>
-							  <tr>
-								<td colspan="7">No Data Found</td>
-							  </tr>
-							<% } %>
-							
+						
+						<div class="table-data">
+                    <table border="1">
+            <div class="row mb-5">          
+              <%
+              if(itemData.length!=0){
+              var i=1;
+              itemData.forEach(function(data){
+              %>
+              
+                    <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+                      <div class="block-4 text-center border">
+                        <div class="block-4-text p-4">
+                          <h3><a href="/offeritem"><%=data.Title %></a></h3>
+                          <br />
+						  <a href="/offeritem"><img src="img/test/chair.jpg" alt="Image placeholder"
+												class="img-fluid" loading="lazy"></a>
+                          <p class="mb-0"><%=data.Description %></p>
+                          <p class="mb-0"></p><%=data.Category %></p>
+                        </div>
+                      </div>
+                    </div>
+                                 
+                            <%  i++; }) %>
+              <% } else{ %>
+                <tr>
+                  <td colspan="7">No Data Found</td>
+                </tr>
+              <% } %>
+            </table>
+            </div>
 
 							
 
@@ -111,22 +156,29 @@
 
 					<div class="col-md-3 order-1 mb-5 mb-md-0">
 
-
 						<div class="border p-4 rounded mb-4">
 							<h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
 							<ul class="list-unstyled mb-0">
-								<li class="mb-1"><a href="#" class="d-flex"><span>Books</span> </a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Clothing</span></a></li>
+								<li class="mb-1"><a href="#" class="d-flex"><span>Books</span> <span
+											class="text-black ml-auto">(2,220)</span></a></li>
+								<li class="mb-1"><a href="#" class="d-flex"><span>Clothing</span> <span
+											class="text-black ml-auto">(2,550)</span></a></li>
 								<li class="mb-1"><a href="#" class="d-flex"><span>Electronics</span>
-										</a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Food</span></a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Home</span> </a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Garden</span> </a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Sports</span> </a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Toys</span></a></li>
+										<span class="text-black ml-auto">(2,124)</span></a></li>
+								<li class="mb-1"><a href="#" class="d-flex"><span>Food</span> <span
+											class="text-black ml-auto">(2,124)</span></a></li>
+								<li class="mb-1"><a href="#" class="d-flex"><span>Home</span> <span
+											class="text-black ml-auto">(2,220)</span></a></li>
+								<li class="mb-1"><a href="#" class="d-flex"><span>Garden</span> <span
+											class="text-black ml-auto">(2,550)</span></a></li>
+								<li class="mb-1"><a href="#" class="d-flex"><span>Sports</span> <span
+											class="text-black ml-auto">(2,124)</span></a></li>
+								<li class="mb-1"><a href="#" class="d-flex"><span>Toys</span> <span
+											class="text-black ml-auto">(2,124)</span></a></li>
 								<li class="mb-1"><a href="#" class="d-flex"><span>Toiletries</span>
-									</a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Other</span></a></li>
+										<span class="text-black ml-auto">(2,220)</span></a></li>
+								<li class="mb-1"><a href="#" class="d-flex"><span>Other</span> <span
+											class="text-black ml-auto">(2,550)</span></a></li>
 						</div>
 
 						<div class="border p-4 rounded mb-4">
