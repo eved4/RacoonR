@@ -41,23 +41,17 @@
 									a new home</p>
 							</div>
 
-							<div class="input-group  py-3">
-								<input type="search" class="form-control rounded" placeholder="Search"
-									aria-label="Search" aria-describedby="search-addon" />
-								<button type="button" class="btn btn-primary">search</button>
-							</div>
-
+							
 							<div class="d-flex">
 								<div class="btn-group">
 									<button type="button" class="btn btn-secondary btn-sm dropdown-toggle"
 										id="dropdownMenuReference" data-toggle="dropdown">Reference</button>
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-										<a class="dropdown-item" href="#">Relevance</a>
-										<a class="dropdown-item" href="#">Name, A to Z</a>
-										<a class="dropdown-item" href="#">Name, Z to A</a>
-										<a class="dropdown-item" href="#">Distance, nearest
+										<a class="dropdown-item" href="/browselogsort?sort=atoz">Name, A to Z</a>
+										<a class="dropdown-item" href="/browselogsort?sort=ztoa">Name, Z to A</a>
+										<a class="dropdown-item" href="/browselogsort?sort=distance">Distance, nearest
 											first</a>
-										<a class="dropdown-item" href="#">Date added, newest
+										<a class="dropdown-item" href="/browselogsort?sort=date">Date added, newest
 											first</a>
 									</div>
 								</div>
@@ -126,49 +120,52 @@
 
 
 					<div class="border p-4 rounded mb-4">
-                <h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
-                <ul class="list-unstyled mb-0">
-					<li class="mb-1"><a href="#" class="d-flex"><span>Books</span> </a></li>
-					  <li class="mb-1"><a href="#" class="d-flex"><span>Clothing</span></a></li>
-					  <li class="mb-1"><a href="#" class="d-flex"><span>Electronics</span>
-						  </a></li>
-					  <li class="mb-1"><a href="#" class="d-flex"><span>Food</span></a></li>
-					  <li class="mb-1"><a href="#" class="d-flex"><span>Home</span> </a></li>
-					  <li class="mb-1"><a href="#" class="d-flex"><span>Garden</span> </a></li>
-					  <li class="mb-1"><a href="#" class="d-flex"><span>Sports</span> </a></li>
-					  <li class="mb-1"><a href="#" class="d-flex"><span>Toys</span></a></li>
-					  <li class="mb-1"><a href="#" class="d-flex"><span>Health and Beauty</span>
-						</a></li>
-					  <li class="mb-1"><a href="#" class="d-flex"><span>Hobbies</span></a></li>
-					  <li class="mb-1"><a href="#" class="d-flex"><span>Other</span></a></li>
-              </div>
-					<div class="border p-4 rounded mb-4">
-
-						<div class="mb-4">
-							<h3 class="mb-3 h6 text-uppercase text-black d-block">Collection</h3>
-							<label for="s_sm" class="d-flex">
-								<input type="checkbox" id="s_sm" class="mr-2 mt-1"> <span
-									class="text-black">Pick-up</span>
-							</label>
-							<label for="s_md" class="d-flex">
-								<input type="checkbox" id="s_md" class="mr-2 mt-1"> <span class="text-black">Local
-									delivery</span>
-							</label>
-						</div>
-
-						<div class="mb-4">
-							<h3 class="mb-3 h6 text-uppercase text-black d-block">Search Keyword
-							</h3>
-							<div class="input-group">
-								<div class="form-outline">
-									<input type="search" id="form1" class="form-control" />
-									<br />
-								</div>
-								<button type="button" class="btn btn-primary">
-									<i class="fas fa-search"></i>
-								</button>
+						<h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
+								<ul class="list-unstyled mb-0">
+								<li class="mb-1"><a href="/browselogcat?cat=books" class="d-flex"><span>Books</span> </a></li>
+								<li class="mb-1"><a href="/browselogcat?cat=clothing" class="d-flex"><span>Clothing</span></a></li>
+								<li class="mb-1"><a href="/browselogcat?cat=electronics" class="d-flex"><span>Electronics</span>
+									</a></li>
+								<li class="mb-1"><a href="/browselogcat?cat=food" class="d-flex"><span>Food</span></a></li>
+								<li class="mb-1"><a href="/browselogcat?cat=home" class="d-flex"><span>Home</span> </a></li>
+								<li class="mb-1"><a href="/browselogcat?cat=garden" class="d-flex"><span>Garden</span> </a></li>
+								<li class="mb-1"><a href="/browselogcat?cat=sports" class="d-flex"><span>Sports</span> </a></li>
+								<li class="mb-1"><a href="/browselogcat?cat=toys" class="d-flex"><span>Toys</span></a></li>
+								<li class="mb-1"><a href="/browselogcat?cat=healthandbeauty" class="d-flex"><span>Health and Beauty</span>
+									</a></li>
+								<li class="mb-1"><a href="/browselogcat?cat=hobbies" class="d-flex"><span>Hobbies</span></a></li>
+								<li class="mb-1"><a href="/browselogcat?cat=other" class="d-flex"><span>Other</span></a></li>
+								<a href="/browseloggedin"><button  type="button" class="btn btn-primary">Reset</button></a>
 							</div>
-						</div>
+
+							<div class="border p-4 rounded mb-4">
+
+								<div class="mb-4">
+									<h3 class="mb-3 h6 text-uppercase text-black d-block">Collection</h3>
+									<ul class="list-unstyled mb-0">
+										<li class="mb-1"><a href="/browselogcoll?coll=pickup" class="d-flex"><span>Pick-up</span> </a></li>
+										<li class="mb-1"><a href="/browselogcoll?coll=localdelivery" class="d-flex"><span>Local delivery</span> </a></li>
+									</ul>
+									<a href="/browseloggedin"><button  type="button" class="btn btn-primary">Reset</button></a>
+								</div>
+							</div>
+
+							<div class="border p-4 rounded mb-4">
+
+								<div class="mb-4">
+								<h3 class="mb-3 h6 text-uppercase text-black d-block">Search Keyword
+								</h3>
+								<form action="searchbrowselog" method="POST">
+										<div class="form-outline">
+											<input type="search" id="form1" class="form-control" name="search" />
+											<br />
+										</div>
+										<button type="submit" class="btn btn-primary">
+											<i class="fas fa-search"></i>
+										</button>
+										
+									</form>
+							</div>
 						<div class="row">
 							<div class="col-md-12 mb-4">
 								<div class="card card-cascade narrower">

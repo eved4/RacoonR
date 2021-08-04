@@ -93,11 +93,66 @@ app.get('/browseloggedin', isLoggedIn, (req, res, next) => {
   });
 });
 
+app.get('/browselogcat', (req, res, next) => {
+  var cat = req.query.cat;
+  var sql = "SELECT * FROM items WHERE Type= 'offering' AND Category = ?";
+  db.query(sql, cat, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browseloggedin', { title: 'Item List', itemData: data });
+  });
+});
+
+app.get('/browselogsort', (req, res, next) => {
+  // var user = req.session.passport.user;
+  var sort = req.query.sort;
+  if (sort == 'atoz') {
+    var sql = "SELECT * FROM items WHERE Type='offering' ORDER BY Title";
+  }
+  if (sort == 'ztoa') {
+    var sql = "SELECT * FROM items WHERE Type='offering' ORDER BY Title desc";
+  }
+  if (sort == 'date') {
+    var sql = "SELECT * FROM items WHERE Type='offering' ORDER BY (DateAdded)";
+  }
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browseloggedin', { title: 'Item List', itemData: data });
+  });
+});
+
 app.get('/browse', (req, res, next) => {
   var sql = "SELECT * FROM items WHERE Type='offering'";
   db.query(sql, function (err, data, fields) {
     if (err) throw err;
     res.render('browse', { title: 'Item List', itemData: data });
+  });
+});
+
+app.get('/browsesort', (req, res, next) => {
+  // var user = req.session.passport.user;
+  var sort = req.query.sort;
+  if (sort == 'atoz') {
+    var sql = "SELECT * FROM items WHERE Type='offering' ORDER BY Title";
+  }
+  if (sort == 'ztoa') {
+    var sql = "SELECT * FROM items WHERE Type='offering' ORDER BY Title desc";
+  }
+  if (sort == 'date') {
+    var sql = "SELECT * FROM items WHERE Type='offering' ORDER BY (DateAdded)";
+  }
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browse', { title: 'Item List', itemData: data });
+  });
+});
+
+app.post('/searchbrowselog', (req, res, next) => {
+  var s = req.body.search;
+  var search = `%${s}%`;
+  var sql = "SELECT * FROM items WHERE Type = 'offering' AND Title COLLATE UTF8_GENERAL_CI LIKE ?";
+  db.query(sql, search, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browseloggedin', { title: 'Item List', itemData: data });
   });
 });
 
@@ -119,8 +174,46 @@ app.get('/browsecoll', (req, res, next) => {
   });
 });
 
+app.post('/searchbrowse', (req, res, next) => {
+  var s = req.body.search;
+  var search = `%${s}%`;
+  var sql = "SELECT * FROM items WHERE Type = 'offering' AND Title COLLATE UTF8_GENERAL_CI LIKE ?";
+  db.query(sql, search, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browse', { title: 'Item List', itemData: data });
+  });
+});
+
 app.get('/browsewanted', (req, res, next) => {
   var sql = "SELECT * FROM items WHERE Type='wanted'";
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsewanted', { title: 'Item List', itemData: data });
+  });
+});
+
+app.post('/searchbrowsewanted', (req, res, next) => {
+  var s = req.body.search;
+  var search = `%${s}%`;
+  var sql = "SELECT * FROM items WHERE Type = 'wanted' AND Title COLLATE UTF8_GENERAL_CI LIKE ?";
+  db.query(sql, search, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsewanted', { title: 'Item List', itemData: data });
+  });
+});
+
+app.get('/browsewantedsort', (req, res, next) => {
+  // var user = req.session.passport.user;
+  var sort = req.query.sort;
+  if (sort == 'atoz') {
+    var sql = "SELECT * FROM items WHERE Type='wanted' ORDER BY Title";
+  }
+  if (sort == 'ztoa') {
+    var sql = "SELECT * FROM items WHERE Type='wanted' ORDER BY Title desc";
+  }
+  if (sort == 'date') {
+    var sql = "SELECT * FROM items WHERE Type='wanted' ORDER BY (DateAdded)";
+  }
   db.query(sql, function (err, data, fields) {
     if (err) throw err;
     res.render('browsewanted', { title: 'Item List', itemData: data });
@@ -148,6 +241,52 @@ app.get('/browsewantedcoll', (req, res, next) => {
 app.get('/browsewantedloggedin', isLoggedIn, (req, res, next) => {
   var sql = "SELECT * FROM items WHERE Type='wanted'";
   db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsewantedloggedin', { title: 'Item List', itemData: data });
+  });
+});
+
+app.get('/browsewantedlogsort', (req, res, next) => {
+  // var user = req.session.passport.user;
+  var sort = req.query.sort;
+  if (sort == 'atoz') {
+    var sql = "SELECT * FROM items WHERE Type='wanted' ORDER BY Title";
+  }
+  if (sort == 'ztoa') {
+    var sql = "SELECT * FROM items WHERE Type='wanted' ORDER BY Title desc";
+  }
+  if (sort == 'date') {
+    var sql = "SELECT * FROM items WHERE Type='wanted' ORDER BY (DateAdded)";
+  }
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsewantedloggedin', { title: 'Item List', itemData: data });
+  });
+});
+
+app.get('/browsewantedlogcat', (req, res, next) => {
+  var cat = req.query.cat;
+  var sql = "SELECT * FROM items WHERE Type= 'wanted' AND Category = ?";
+  db.query(sql, cat, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsewantedloggedin', { title: 'Item List', itemData: data });
+  });
+});
+
+app.get('/browsewantedlogcoll', (req, res, next) => {
+  var coll = req.query.coll;
+  var sql = "SELECT * FROM items WHERE Type= 'wanted' AND Collection = ?";
+  db.query(sql, coll, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsewantedloggedin', { title: 'Item List', itemData: data });
+  });
+});
+
+app.post('/searchbrowsewantedlog', (req, res, next) => {
+  var s = req.body.search;
+  var search = `%${s}%`;
+  var sql = "SELECT * FROM items WHERE Type = 'wanted' AND Title COLLATE UTF8_GENERAL_CI LIKE ?";
+  db.query(sql, search, function (err, data, fields) {
     if (err) throw err;
     res.render('browsewantedloggedin', { title: 'Item List', itemData: data });
   });
@@ -271,21 +410,33 @@ app.post('/register', async function (req, res, next) {
 */
 
 // ACCOUNT
+
 app.get('/account', isLoggedIn, (req, res, next) => {
-  return res.render('account');
+  var user = req.session.passport.user;
+  var sql = 'SELECT * FROM users WHERE UserID=?';
+  db.query(sql, user, function (err, data, fields) {
+    if (err) throw err;
+    res.render('account', { userData: data });
+  });
 });
 
-app.get('/account', function (req, res, next) {
-  if (req.session.loggedin) {
-    res.render('auth/home', {
-      title: 'Dashboard',
-      name: req.session.name,
-    });
-  } else {
-    req.flash('success', 'Please login first!');
-    res.redirect('/login');
-  }
+app.post('/accountgeneral', isLoggedIn, async function (req, res, next) {
+  var inputData = {
+    City: req.body.city,
+    PostCode: req.body.postcode,
+    Country: req.body.country,
+    Email: req.body.email,
+    FirstName: req.body.firstname,
+    LastName: req.body.lastname,
+    UserID: req.session.passport.user,
+  };
+
+  db.query(
+    `UPDATE users SET City = "${inputData.City}", PostCode ="${inputData.PostCode}", Country ="${inputData.Country}", Email ="${inputData.Email}", FirstName = "${inputData.FirstName}", LastName = "${inputData.LastName}" WHERE UserID = "${inputData.UserID}"`
+  );
+  res.redirect('/account');
 });
+
 // Logout user
 app.get('/logout', function (req, res) {
   req.session.destroy();
@@ -358,6 +509,24 @@ app.get('/communities', (req, res, next) => {
   });
 });
 
+app.get('/communitiessort', (req, res, next) => {
+  // var user = req.session.passport.user;
+  var sort = req.query.sort;
+  if (sort == 'atoz') {
+    var sql = 'SELECT * FROM communities ORDER BY CommunityName';
+  }
+  if (sort == 'ztoa') {
+    var sql = 'SELECT * FROM communities ORDER BY CommunityName desc';
+  }
+  if (sort == 'date') {
+    var sql = 'SELECT * FROM communities ORDER BY (DateCreated)';
+  }
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('communities', { title: 'Community List', communityData: data });
+  });
+});
+
 app.get('/communitiescat', (req, res, next) => {
   var cat = req.query.cat;
   var sql = 'SELECT * FROM communities WHERE Category = ?';
@@ -402,6 +571,45 @@ app.get('/communitiesloggedin', isLoggedIn, (req, res, next) => {
   var sql = 'SELECT * FROM communities';
   db.query(sql, function (err, data, fields) {
     if (err) throw err;
+    res.render('communitiesloggedin', { title: 'Community List', communityData: data });
+  });
+});
+
+app.get('/communitieslogsort', (req, res, next) => {
+  // var user = req.session.passport.user;
+  var sort = req.query.sort;
+  if (sort == 'atoz') {
+    var sql = 'SELECT * FROM communities ORDER BY CommunityName';
+  }
+  if (sort == 'ztoa') {
+    var sql = 'SELECT * FROM communities ORDER BY CommunityName desc';
+  }
+  if (sort == 'date') {
+    var sql = 'SELECT * FROM communities ORDER BY (DateCreated)';
+  }
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('communitiesloggedin', { title: 'Community List', communityData: data });
+  });
+});
+
+app.get('/communitieslogcat', (req, res, next) => {
+  var cat = req.query.cat;
+  var sql = 'SELECT * FROM communities WHERE Category = ?';
+  db.query(sql, cat, function (err, data, fields) {
+    if (err) throw err;
+    res.render('communitiesloggedin', { title: 'Community List', communityData: data });
+  });
+});
+
+app.post('/searchcomlog', (req, res, next) => {
+  var s = req.body.search;
+  var search = `%${s}%`;
+  console.log(search);
+  var sql = 'SELECT * FROM communities WHERE CommunityName COLLATE UTF8_GENERAL_CI LIKE ?';
+  db.query(sql, search, function (err, data, fields) {
+    if (err) throw err;
+    console.log(search);
     res.render('communitiesloggedin', { title: 'Community List', communityData: data });
   });
 });

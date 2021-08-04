@@ -37,25 +37,16 @@
                     can help them out</p>
 								</div>
 
-								<div class="input-group  py-3">
-									<input type="search" class="form-control rounded" placeholder="Search"
-										aria-label="Search" aria-describedby="search-addon" />
-									<button type="button" class="btn btn-primary">search</button>
-								</div>
-
 								<div class="d-flex">
 									<div class="btn-group">
 										<button type="button" class="btn btn-secondary btn-sm dropdown-toggle"
 											id="dropdownMenuReference" data-toggle="dropdown">Reference</button>
-										<div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-											<a class="dropdown-item" href="#">Relevance</a>
-											<a class="dropdown-item" href="#">Name, A to Z</a>
-											<a class="dropdown-item" href="#">Name, Z to A</a>
-											<a class="dropdown-item" href="#">Distance, nearest
-												first</a>
-											<a class="dropdown-item" href="#">Date added, newest
-												first</a>
-										</div>
+											<div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
+												<a class="dropdown-item" href="/browsewantedsort?sort=atoz">Name, A to Z</a>
+												<a class="dropdown-item" href="/browsewantedsort?sort=ztoa">Name, Z to A</a>
+												<a class="dropdown-item" href="/browsewantedsort?sort=date">Date added, newest
+													first</a>
+											</div>
 									</div>
 								</div>
 							</div>
@@ -87,10 +78,7 @@
 							  </tr>
 							<% } %>
 							
-
-							
-
-
+							  					
 						</div>
 						<div class="row" data-aos="fade-up">
 							<div class="col-md-12 text-center">
@@ -150,15 +138,16 @@
 							<div class="mb-4">
 								<h3 class="mb-3 h6 text-uppercase text-black d-block">Search Keyword
 								</h3>
-								<div class="input-group">
-									<div class="form-outline">
-										<input type="search" id="form1" class="form-control" />
-										<br />
-									</div>
-									<button type="button" class="btn btn-primary">
-										<i class="fas fa-search"></i>
-									</button>
-								</div>
+								<form action="searchbrowsewanted" method="POST">
+										<div class="form-outline">
+											<input type="search" id="form1" class="form-control" name="search" />
+											<br />
+										</div>
+										<button type="submit" class="btn btn-primary">
+											<i class="fas fa-search"></i>
+										</button>
+										
+									</form>
 							</div>
 							<div class="row">
 								<div class="col-md-12 mb-4">
