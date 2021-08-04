@@ -3,31 +3,31 @@
   <%- include("partials/head") -%>
 
   <body>
-    <%- include("partials/navigation", {page:"communities"}); -%>
-
+    <%- include("partials/navigation", {page:"communities"}); -%> <% if(communityData.length!=0){
+    var i=1; communityData.forEach(function(data){ %>
     <div class="site-wrap bg-light">
       <div class="site-section">
         <div class="container">
           <div class="row">
             <div class="col-md-6">
-              <img src="img/books.jpg" alt="Image" class="img-fluid" />
+              <img src="<%=data.CommunityImg%>" alt="Image" class="img-fluid" />
             </div>
             <div class="col-md-6 pt-3">
-              <h2 class="text-black">Books</h2>
+              <h2 class="text-black"><%=data.CommunityName %></h2>
+              <p><%=data.Description %></p>
               <p>
-                Book swap community. We are community all about swapping books and sharing
-                reccomendations. We have members spanning the country and events are held all over.
-                You are bound to find people near you. Feel free to join below.
-              </p>
-              <p>
-                <a href="/login" class="buy-now btn btn-sm btn-primary"
-                  >Log in to request to join</a
-                >
+                <a href="/communityform" class="buy-now btn btn-sm btn-primary">Request to join</a>
               </p>
             </div>
           </div>
         </div>
       </div>
+
+      <% i++; }) %> <% } else{ %>
+      <tr>
+        <td colspan="7">No Data Found</td>
+      </tr>
+      <% } %>
 
       <!-- Start Fixed Background IMG -->
 

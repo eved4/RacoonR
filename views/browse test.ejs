@@ -24,42 +24,6 @@
 	<!-- End Navigation -->
 
 
-	<div class="table-data">
-		<h2>Display Data using Node.js & MySQL</h2>
-			<table border="1">
-				<tr>
-					<th></th>
-					<th>Title</th>
-					<th>Description</th>
-					<th>Category</th>
-										<th>Edit</th>
-					<th>Delete</th>
-				</tr>
-				
-				<%
-				if(itemData.length!=0){
-				var i=1;
-				itemData.forEach(function(data){
-				%>
-				<tr>
-					<td><%=i; %></td>
-					<td><%=data.Title %></td>
-					<td><%=data.Description %></td>
-					<td><%=data.Category %></td>
-									<td><a href="/users/edit/<%=data.id%>">Edit</a></td>
-					<td><a href="/users/delete/<%=data.id%>">Delete</a></td>
-				</tr>
-				<%  i++; }) %>
-				<% } else{ %>
-					<tr>
-						<td colspan="7">No Data Found</td>
-					</tr>
-				<% } %>
-			</table>
-			</div>
-
-
-
 	<div class=" site-wrap bg-light">
 		<div class="site-section">
 			<div class="container">

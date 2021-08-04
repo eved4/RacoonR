@@ -101,11 +101,47 @@ app.get('/browse', (req, res, next) => {
   });
 });
 
+app.get('/browsecat', (req, res, next) => {
+  var cat = req.query.cat;
+  var sql = "SELECT * FROM items WHERE Type= 'offering' AND Category = ?";
+  db.query(sql, cat, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browse', { title: 'Item List', itemData: data });
+  });
+});
+
+app.get('/browsecoll', (req, res, next) => {
+  var coll = req.query.coll;
+  var sql = "SELECT * FROM items WHERE Type= 'offering' AND Collection = ?";
+  db.query(sql, coll, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browse', { title: 'Item List', itemData: data });
+  });
+});
+
 app.get('/browsewanted', (req, res, next) => {
   var sql = "SELECT * FROM items WHERE Type='wanted'";
   db.query(sql, function (err, data, fields) {
     if (err) throw err;
-    res.render('browsewanted', { title: 'User List', itemData: data });
+    res.render('browsewanted', { title: 'Item List', itemData: data });
+  });
+});
+
+app.get('/browsewantedcat', (req, res, next) => {
+  var cat = req.query.cat;
+  var sql = "SELECT * FROM items WHERE Type= 'wanted' AND Category = ?";
+  db.query(sql, cat, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsewanted', { title: 'Item List', itemData: data });
+  });
+});
+
+app.get('/browsewantedcoll', (req, res, next) => {
+  var coll = req.query.coll;
+  var sql = "SELECT * FROM items WHERE Type= 'wanted' AND Collection = ?";
+  db.query(sql, coll, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsewanted', { title: 'Item List', itemData: data });
   });
 });
 
@@ -239,7 +275,6 @@ app.get('/account', isLoggedIn, (req, res, next) => {
   return res.render('account');
 });
 
-//display home page
 app.get('/account', function (req, res, next) {
   if (req.session.loggedin) {
     res.render('auth/home', {
@@ -284,9 +319,6 @@ app.post('/additem', isLoggedIn, async function (req, res, next) {
   sampleFile = inputData.Image;
   uploadPath = '/img/test/' + sampleFile;
 
-  console.log(sampleFile);
-  console.log(uploadPath);
-
   db.query(
     `INSERT INTO items (UserID, Type, Title, Description, Category, Collection, DateAdded, ImagePath) VALUES ("${inputData.UserID}", "${inputData.Type}", "${inputData.Title}", "${inputData.Description}","${inputData.Category}","${inputData.Collection}",NOW(), "${uploadPath}")`
   );
@@ -295,7 +327,13 @@ app.post('/additem', isLoggedIn, async function (req, res, next) {
 
 // ITEMS
 app.get('/offeritem', (req, res, next) => {
-  return res.render('offeritem');
+  var topic = req.query.itemid;
+  var sql = 'SELECT * FROM items WHERE ItemID = ?;';
+  db.query(sql, topic, function (err, data, fields) {
+    if (err) throw err;
+    console.log(data);
+    return res.render('offeritem', { topic: topic, itemData: data });
+  });
 });
 
 app.get('/wanteditem', (req, res, next) => {
@@ -311,8 +349,75 @@ app.get('/wanteditemloggedin', isLoggedIn, (req, res, next) => {
 });
 
 // COMMUNITIES
+
+app.get('/communities', (req, res, next) => {
+  var sql = 'SELECT * FROM communities';
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('communities', { title: 'Community List', communityData: data });
+  });
+});
+
+app.get('/communitiescat', (req, res, next) => {
+  var cat = req.query.cat;
+  var sql = 'SELECT * FROM communities WHERE Category = ?';
+  db.query(sql, cat, function (err, data, fields) {
+    if (err) throw err;
+    res.render('communities', { title: 'Community List', communityData: data });
+  });
+});
+
+app.post('/searchcom', (req, res, next) => {
+  var s = req.body.search;
+  var search = `%${s}%`;
+  console.log(search);
+  var sql = 'SELECT * FROM communities WHERE CommunityName COLLATE UTF8_GENERAL_CI LIKE ?';
+  db.query(sql, search, function (err, data, fields) {
+    if (err) throw err;
+    console.log(search);
+    res.render('communities', { title: 'Community List', communityData: data });
+  });
+});
+
+app.post('/addcommunity', isLoggedIn, async function (req, res, next) {
+  let sampleFile;
+  let uploadPath;
+
+  var inputData = {
+    Name: req.body.name,
+    Description: req.body.description,
+    Category: req.body.category,
+    UserID: req.session.passport.user,
+  };
+
+  uploadPath = '/img/categories/' + inputData.Category + '.jpg';
+
+  db.query(
+    `INSERT INTO communities (UserID, CommunityName, Description, Category, DateCreated, CommunityImg) VALUES ("${inputData.UserID}", "${inputData.Name}", "${inputData.Description}","${inputData.Category}",NOW(), "${uploadPath}")`
+  );
+  res.redirect('communitiesloggedin');
+});
+
+app.get('/communitiesloggedin', isLoggedIn, (req, res, next) => {
+  var sql = 'SELECT * FROM communities';
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('communitiesloggedin', { title: 'Community List', communityData: data });
+  });
+});
+
 app.get('/community', (req, res, next) => {
-  return res.render('community');
+  var topic = req.query.communityid;
+  var sql = 'SELECT * FROM communities WHERE CommunityID = ?;';
+  db.query(sql, topic, function (err, data, fields) {
+    if (err) throw err;
+    console.log(data);
+    return res.render('community', { communityData: data });
+  });
+});
+
+app.get('/addcommunity', isLoggedIn, (req, res, next) => {
+  return res.render('addcommunity');
 });
 
 app.get('/communities', (req, res, next) => {
@@ -327,25 +432,55 @@ app.get('/communityloggedin', isLoggedIn, (req, res, next) => {
   return res.render('communityloggedin');
 });
 
-app.get('/communitiesloggedin', isLoggedIn, (req, res, next) => {
-  return res.render('communitiesloggedin');
-});
-
 // EVENTS
-app.get('/eventpage', (req, res, next) => {
-  return res.render('eventpage');
+app.get('/event', (req, res, next) => {
+  var topic = req.query.eventid;
+  var sql = 'SELECT * FROM events WHERE EventID = ?;';
+  db.query(sql, topic, function (err, data, fields) {
+    if (err) throw err;
+    console.log(data);
+    return res.render('event', { eventData: data });
+  });
 });
 
 app.get('/events', (req, res, next) => {
-  return res.render('events');
+  var sql = 'SELECT * FROM events';
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('events', { title: 'Event List', eventData: data });
+  });
 });
 
-app.get('/eventpageloggedin', isLoggedIn, (req, res, next) => {
-  return res.render('eventpageloggedin');
+app.get('/eventsloggedin', (req, res, next) => {
+  var sql = 'SELECT * FROM events';
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('events', { title: 'Event List', eventData: data });
+  });
 });
 
-app.get('/eventsloggedin', isLoggedIn, (req, res, next) => {
-  return res.render('eventsloggedin');
+app.get('/eventloggedin', isLoggedIn, (req, res, next) => {
+  return res.render('eventloggedin');
+});
+
+app.get('/addevent', isLoggedIn, (req, res, next) => {
+  return res.render('addevent');
+});
+
+app.post('/addevent', isLoggedIn, async function (req, res, next) {
+  var inputData = {
+    Name: req.body.name,
+    Description: req.body.description,
+    Collection: req.body.collection,
+    UserID: req.session.passport.user,
+    Date: req.body.date,
+    PostCode: req.body.postcode,
+  };
+
+  db.query(
+    `INSERT INTO events (EventName, Description, DateCreated, Author, Date, PostCode) VALUES ("${inputData.Name}", "${inputData.Description}",NOW(), "${inputData.UserID}", "${inputData.Date}", "${inputData.PostCode}")`
+  );
+  res.redirect('eventsloggedin');
 });
 
 const { response } = require('express');

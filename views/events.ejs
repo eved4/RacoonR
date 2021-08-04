@@ -3,7 +3,9 @@
   <%- include("partials/head") -%>
 
   <body>
-    <%- include("partials/navigation", {page:"events"}); -%>
+    <%- include("partials/navigation", {page:"events"}) -%>
+
+    <!-- End Navigation -->
 
     <div class="site-wrap bg-light">
       <div class="site-section">
@@ -21,124 +23,29 @@
                       Find events run by groups and charities in your community and get involved
                     </p>
                   </div>
-
-                  <div class="input-group py-3">
-                    <input
-                      type="search"
-                      class="form-control rounded"
-                      placeholder="Search"
-                      aria-label="Search"
-                      aria-describedby="search-addon"
-                    />
-                    <button type="button" class="btn btn-primary">search</button>
-                  </div>
-
-                  <div class="d-flex">
-                    <div class="btn-group">
-                      <button
-                        type="button"
-                        class="btn btn-secondary btn-sm dropdown-toggle"
-                        id="dropdownMenuReference"
-                        data-toggle="dropdown"
-                      >
-                        Reference
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                        <a class="dropdown-item" href="#">Relevance</a>
-                        <a class="dropdown-item" href="#">Distance, nearest first</a>
-                        <a class="dropdown-item" href="#">Date added, newest first</a>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="row mb-5">
-                <div class="col-sm-6 col-lg-6 mb-4" data-aos="fade-up">
+                <% if(eventData.length!=0){ var i=1; eventData.forEach(function(data){ %>
+
+                <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                   <div class="block-4 text-center border">
                     <div class="block-4-text p-4">
-                      <h3><a href="/eventpage">Bottle Tops needed</a></h3>
-                      <p class="mb-0">
-                        Apple Tree Primary School is searching for milk and fizzy drink bottle tops
-                        for a school art project
-                      </p>
+                      <h3>
+                        <a href="/event?eventid=<%= data.EventID %> "><%=data.EventName %> </a>
+                      </h3>
+
+                      <br />
+                      <p class="mb-0"><%=data.Description %></p>
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-6 col-lg-6 mb-4" data-aos="fade-up">
-                  <div class="block-4 text-center border">
-                    <div class="block-4-text p-4">
-                      <h3><a href="/eventpage">Tinned food and pasta needed</a></h3>
-                      <p class="mb-0">
-                        North London food bank is in search of tinned goods and dried pasta
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-6 mb-4" data-aos="fade-up">
-                  <div class="block-4 text-center border">
-                    <div class="block-4-text p-4">
-                      <h3><a href="/eventpage">Period Products</a></h3>
-                      <p class="mb-0">
-                        Poppy Street High School is collecting period products to help end period
-                        poverty
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-6 mb-4" data-aos="fade-up">
-                  <div class="block-4 text-center border">
-                    <div class="block-4-text p-4">
-                      <h3><a href="/eventpage">Old laptops</a></h3>
-                      <p class="mb-0">
-                        West Hill Primary School is looking for old laptops in working condition for
-                        the SEN department
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-6 mb-4" data-aos="fade-up">
-                  <div class="block-4 text-center border">
-                    <div class="block-4-text p-4">
-                      <h3><a href="/eventpage">Craft materials</a></h3>
-                      <p class="mb-0">
-                        Belsize Church Sunday school are currently making displays for the church
-                        and need some supplied for thier art work
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-6 mb-4" data-aos="fade-up">
-                  <div class="block-4 text-center border">
-                    <div class="block-4-text p-4">
-                      <h3><a href="/eventpage">Broken tiles</a></h3>
-                      <p class="mb-0">
-                        We are a small cafe and are currently making over our kitchen. We are
-                        looking for broken tiles for this DIY project
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-6 mb-4" data-aos="fade-up">
-                  <div class="block-4 text-center border">
-                    <div class="block-4-text p-4">
-                      <h3><a href="/eventpage">Sleeping bags and warm clothes</a></h3>
-                      <p class="mb-0">
-                        Local homelessness charity is collecting for our next distribution event
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-6 mb-4" data-aos="fade-up">
-                  <div class="block-4 text-center border">
-                    <div class="block-4-text p-4">
-                      <h3><a href="/eventpage">Notepads</a></h3>
-                      <p class="mb-0">
-                        We are class 5 from Station Road Primary and we are looking for notepads for
-                        our geography project
-                      </p>
-                    </div>
-                  </div>
-                </div>
+
+                <% i++; }) %> <% } else{ %>
+                <tr>
+                  <td colspan="7">No Data Found</td>
+                </tr>
+                <% } %>
               </div>
               <div class="row" data-aos="fade-up">
                 <div class="col-md-12 text-center">

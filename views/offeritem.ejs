@@ -17,19 +17,18 @@
       </ul>
     </nav>
 
+    <% if(itemData.length!=0){ var i=1; itemData.forEach(function(data){ %>
+
     <div class="site-wrap bg-light">
       <div class="site-section">
         <div class="container">
           <div class="row">
             <div class="col-md-6">
-              <img src="img/test/chair.jpg" alt="Image" class="img-fluid" />
+              <img src="<%=data.ImagePath %>" alt="Image" class="img-fluid" />
             </div>
             <div class="col-md-6 pt-3">
-              <h2 class="text-black">Chair</h2>
-              <p>
-                Brand new, just doesn't fit in our flat. Would love for it to go to a new home.
-                Pickup only, address given in private message.
-              </p>
+              <h2 class="text-black"><%=data.Title %></h2>
+              <p><%=data.Description %></p>
               <p>
                 <a href="/login" class="buy-now btn btn-sm btn-primary">Login to send a message</a>
               </p>
@@ -40,6 +39,13 @@
               </p>
             </div>
           </div>
+
+          <% i++; }) %> <% } else{ %>
+          <tr>
+            <td colspan="7">No Data Found</td>
+          </tr>
+          <% } %>
+
           <div class="row">
             <div class="col-md-12 mb-4 pt-5">
               <div class="card card-cascade narrower">
@@ -88,8 +94,12 @@
                       /><textarea class="form-control ml-1 shadow-none textarea"></textarea>
                     </div>
                     <div class="mt-2 text-right">
-                      <button class="btn btn-primary btn-sm shadow-none" type="button">
-                        Login in to post comment</button
+                      <button
+                        href="/login"
+                        class="btn btn-primary btn-sm shadow-none"
+                        type="button"
+                      >
+                        Login to post a comment</button
                       ><button
                         class="btn btn-outline-primary btn-sm ml-1 shadow-none"
                         type="button"
@@ -120,7 +130,7 @@
                       <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                         <div class="block-4 text-center border">
                           <figure class="block-4-image">
-                            <a href="/offeritem"
+                            <a href="/offeritemloggedin"
                               ><img
                                 src="img/test/chair.jpg"
                                 alt="Image placeholder"
@@ -128,7 +138,7 @@
                             /></a>
                           </figure>
                           <div class="block-4-text p-4">
-                            <h3><a href="/offeritem">Chair</a></h3>
+                            <h3><a href="/offeritemloggedin">Chair</a></h3>
                             <p class="mb-0">Brand new, just doesn't fit in our flat</p>
                           </div>
                         </div>
@@ -136,7 +146,7 @@
                       <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                         <div class="block-4 text-center border">
                           <figure class="block-4-image">
-                            <a href="/offeritem"
+                            <a href="/offeritemloggedin"
                               ><img
                                 src="img/test/books.jpg"
                                 alt="Image placeholder"
@@ -144,7 +154,7 @@
                             /></a>
                           </figure>
                           <div class="block-4-text p-4">
-                            <h3><a href="/offeritem">Books</a></h3>
+                            <h3><a href="/offeritemloggedin">Books</a></h3>
                             <p class="mb-0">Used books I don't want to read again</p>
                           </div>
                         </div>
@@ -152,7 +162,7 @@
                       <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                         <div class="block-4 text-center border">
                           <figure class="block-4-image">
-                            <a href="/offeritem"
+                            <a href="/offeritemloggedin"
                               ><img
                                 src="img/test/food.jpg"
                                 alt="Image placeholder"
@@ -160,7 +170,7 @@
                             /></a>
                           </figure>
                           <div class="block-4-text p-4">
-                            <h3><a href="/offeritem">Bags of food</a></h3>
+                            <h3><a href="/offeritemloggedin">Bags of food</a></h3>
                             <p class="mb-0">Bought for anyone who really needs them</p>
                           </div>
                         </div>

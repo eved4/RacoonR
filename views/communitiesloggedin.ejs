@@ -7,7 +7,7 @@
 		
 	  <%- include("partials/navigationloggedin", {page:"communities"}) -%>
 
-	<div class="site-wrap bg-light">
+	  <div class=" site-wrap bg-light">
 		<div class="site-section">
 			<div class="container">
 				<div class="row mb-5">
@@ -17,7 +17,8 @@
 
 								<div class="col-12 text-center mt-2 bg-light">
 									<h1 class="text-dark">Communities</h1>
-									<div class="border-top border-primary d-none d-lg-block w-25 mx-auto my-3"></div>
+									<div class="border-top border-primary d-none d-lg-block w-25 mx-auto my-3">
+									</div>
 									<p class="lead">Find like-minded communities to join and give items a second (or
 										third) life</p>
 								</div>
@@ -36,6 +37,10 @@
 											<a class="dropdown-item" href="#">Relevance</a>
 											<a class="dropdown-item" href="#">Name, A to Z</a>
 											<a class="dropdown-item" href="#">Name, Z to A</a>
+											<a class="dropdown-item" href="#">Distance, nearest
+												first</a>
+											<a class="dropdown-item" href="#">Date added, newest
+												first</a>
 										</div>
 									</div>
 								</div>
@@ -43,119 +48,35 @@
 						</div>
 						<div class="row mb-5">
 
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Books</a></h3>
+							<%
+							if(communityData.length!=0){
+							var i=1;
+							communityData.forEach(function(data){
+							%>
+							
+							
+								  <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+									<div class="block-4 text-center border">
+									  <div class="block-4-text p-4">
+										<h3><a href="/community"><%=data.CommunityName %> </a></h3>
+										
 										<br />
-										<p class="mb-0">Book swap community</p>
+										<p class="mb-0"><%=data.Description %></p>
+										<p class="mb-0"></p><%=data.Category %></p>
+									  </div>
 									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Tools</a></h3>
-										<br />
-										<p class="mb-0">Lending and swapping DIY tools</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Textbooks</a></h3>
-										<br />
-										<p class="mb-0">Students looking for and giving away textbooks</p>
-									</div>
-								</div>
-							</div>
+								  </div>
+											   
+										  <%  i++; }) %>
+							<% } else{ %>
+							  <tr>
+								<td colspan="7">No Data Found</td>
+							  </tr>
+							<% } %>
+							
 
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
+							
 
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Garden tools</a></h3>
-										<br />
-										<p class="mb-0">Lending and swapping garden tools</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Furniture</a></h3>
-										<br />
-										<p class="mb-0">Furniture swaps and donations</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-									<div class="block-4-text p-4">
-										<h3><a href="/community">DVDs</a></h3>
-										<br />
-										<p class="mb-0">Swapping and donating films on DVD</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Records</a></h3>
-										<br />
-										<p class="mb-0">Swap shop for record lovers</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Food</a></h3>
-										<br />
-										<p class="mb-0">Group for giving and receiving left-over food</p>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Stationary</a></h3>
-										<br />
-										<p class="mb-0">Donations of stationary</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Packing boxes</a></h3>
-										<br />
-										<p class="mb-0">Keeping packing boxes moving around</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Building stuff</a></h3>
-										<br />
-										<p class="mb-0">Borrow or donate pieces for DIY building projects</p>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-								<div class="block-4 text-center border">
-									<div class="block-4-text p-4">
-										<h3><a href="/community">Toys</a></h3>
-										<br />
-										<p class="mb-0">Let's give some toys a second life</p>
-									</div>
-								</div>
-							</div>
 
 						</div>
 						<div class="row" data-aos="fade-up">
@@ -176,41 +97,40 @@
 					</div>
 
 					<div class="col-md-3 order-1 mb-5 mb-md-0">
-						<div class="border p-4 rounded mb-4">
-							<h3 class="mb-3 h6 text-uppercase text-black d-block">Create a new community</h3>
-							<a class="btn btn-primary" href="/addcommunity"><i class="fas fa-plus"></i>
-							</a>
-						</div>
-						<div class="border p-4 rounded mb-4">
-
-							<h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
-							<ul class="list-unstyled mb-0">
-								<li class="mb-1"><a href="#" class="d-flex"><span>Books</span> <span
-											class="text-black ml-auto">(2,220)</span></a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Clothing</span> <span
-											class="text-black ml-auto">(2,550)</span></a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Electronics</span> <span
-											class="text-black ml-auto">(2,124)</span></a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Food</span> <span
-											class="text-black ml-auto">(2,124)</span></a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Home</span> <span
-											class="text-black ml-auto">(2,220)</span></a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Garden</span> <span
-											class="text-black ml-auto">(2,550)</span></a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Sports</span> <span
-											class="text-black ml-auto">(2,124)</span></a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Toys</span> <span
-											class="text-black ml-auto">(2,124)</span></a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Toiletries</span> <span
-											class="text-black ml-auto">(2,220)</span></a></li>
-								<li class="mb-1"><a href="#" class="d-flex"><span>Other</span> <span
-											class="text-black ml-auto">(2,550)</span></a></li>
-						</div>
 
 						<div class="border p-4 rounded mb-4">
+						<h3 class="mb-3 h6 text-uppercase text-black d-block">Add a new community</h3>
+						<a class="btn btn-primary" href="/addcommunity"><i class="fas fa-plus"></i>
+						</a>
+					</div>
+
+
+						<div class="border p-4 rounded mb-4">
+				<h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
+				<ul class="list-unstyled mb-0">
+					<li class="mb-1"><a href="#" class="d-flex"><span>Books</span> </a></li>
+					  <li class="mb-1"><a href="#" class="d-flex"><span>Clothing</span></a></li>
+					  <li class="mb-1"><a href="#" class="d-flex"><span>Electronics</span>
+						  </a></li>
+					  <li class="mb-1"><a href="#" class="d-flex"><span>Food</span></a></li>
+					  <li class="mb-1"><a href="#" class="d-flex"><span>Home</span> </a></li>
+					  <li class="mb-1"><a href="#" class="d-flex"><span>Garden</span> </a></li>
+					  <li class="mb-1"><a href="#" class="d-flex"><span>Sports</span> </a></li>
+					  <li class="mb-1"><a href="#" class="d-flex"><span>Toys</span></a></li>
+					  <li class="mb-1"><a href="#" class="d-flex"><span>Health and Beauty</span>
+						</a></li>
+					  <li class="mb-1"><a href="#" class="d-flex"><span>Hobbies</span></a></li>
+					  <li class="mb-1"><a href="#" class="d-flex"><span>Other</span></a></li>
+			  </div>
+			  
+
+						<div class="border p-4 rounded mb-4">
+
+							
 
 							<div class="mb-4">
-								<h3 class="mb-3 h6 text-uppercase text-black d-block">Search Keyword</h3>
+								<h3 class="mb-3 h6 text-uppercase text-black d-block">Search Keyword
+								</h3>
 								<div class="input-group">
 									<div class="form-outline">
 										<input type="search" id="form1" class="form-control" />
@@ -221,14 +141,14 @@
 									</button>
 								</div>
 							</div>
-
+							
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-		
+
 
 	<!-- Start Fixed Background IMG -->
 
@@ -237,6 +157,7 @@
 			<div class="fixed"></div>
 		</div>
 	</div>
+
 
 
 	<!-- Start Footer -->
@@ -261,6 +182,7 @@
 	</footer>
 
 	<!-- End Footer -->
+
 	<!-- Script Source Files -->
 
 	<!-- jQuery -->

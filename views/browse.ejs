@@ -75,8 +75,9 @@
 								  <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 									<div class="block-4 text-center border">
 									  <div class="block-4-text p-4">
-										<h3><a href="/offeritem"><%=data.Title %> </a></h3>
-										<a href="/offeritem"><img src="<%=data.ImagePath %>" alt="Image placeholder"
+																			
+										<h3><a href="/offeritem?itemid=<%= data.ItemID %>"><%=data.Title %> </a></h3>
+										<a href="/offeritem?itemid=<%= data.ItemID %>"><img src="<%=data.ImagePath %>" alt="Image placeholder"
 															  class="img-fluid" loading="lazy"></a>
 										<br />
 										<p class="mb-0"><%=data.Description %></p>
@@ -118,35 +119,37 @@
 
 
 						<div class="border p-4 rounded mb-4">
-                <h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
-                <ul class="list-unstyled mb-0">
-                  <li class="mb-1"><a href="#" class="d-flex"><span>Books</span> </a></li>
-                  <li class="mb-1"><a href="#" class="d-flex"><span>Clothing</span></a></li>
-                  <li class="mb-1"><a href="#" class="d-flex"><span>Electronics</span>
-                      </a></li>
-                  <li class="mb-1"><a href="#" class="d-flex"><span>Food</span></a></li>
-                  <li class="mb-1"><a href="#" class="d-flex"><span>Home</span> </a></li>
-                  <li class="mb-1"><a href="#" class="d-flex"><span>Garden</span> </a></li>
-                  <li class="mb-1"><a href="#" class="d-flex"><span>Sports</span> </a></li>
-                  <li class="mb-1"><a href="#" class="d-flex"><span>Toys</span></a></li>
-                  <li class="mb-1"><a href="#" class="d-flex"><span>Toiletries</span>
-                    </a></li>
-                  <li class="mb-1"><a href="#" class="d-flex"><span>Other</span></a></li>
-              </div>
+								<h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
+								<ul class="list-unstyled mb-0">
+								<li class="mb-1"><a href="/browsecat?cat=books" class="d-flex"><span>Books</span> </a></li>
+								<li class="mb-1"><a href="/browsecat?cat=clothing" class="d-flex"><span>Clothing</span></a></li>
+								<li class="mb-1"><a href="/browsecat?cat=electronics" class="d-flex"><span>Electronics</span>
+									</a></li>
+								<li class="mb-1"><a href="/browsecat?cat=food" class="d-flex"><span>Food</span></a></li>
+								<li class="mb-1"><a href="/browsecat?cat=home" class="d-flex"><span>Home</span> </a></li>
+								<li class="mb-1"><a href="/browsecat?cat=garden" class="d-flex"><span>Garden</span> </a></li>
+								<li class="mb-1"><a href="/browsecat?cat=sports" class="d-flex"><span>Sports</span> </a></li>
+								<li class="mb-1"><a href="/browsecat?cat=toys" class="d-flex"><span>Toys</span></a></li>
+								<li class="mb-1"><a href="/browsecat?cat=healthandbeauty" class="d-flex"><span>Health and Beauty</span>
+									</a></li>
+								<li class="mb-1"><a href="/browsecat?cat=hobbies" class="d-flex"><span>Hobbies</span></a></li>
+								<li class="mb-1"><a href="/browsecat?cat=other" class="d-flex"><span>Other</span></a></li>
+								<a href="/browse"><button  type="button" class="btn btn-primary">Reset</button></a>
+							</div>
+
+							 <div class="border p-4 rounded mb-4">
+
+								<div class="mb-4">
+									<h3 class="mb-3 h6 text-uppercase text-black d-block">Collection</h3>
+									<ul class="list-unstyled mb-0">
+										<li class="mb-1"><a href="/browsecoll?coll=pickup" class="d-flex"><span>Pick-up</span> </a></li>
+										<li class="mb-1"><a href="/browsecoll?coll=localdelivery" class="d-flex"><span>Local delivery</span> </a></li>
+									</ul>
+									<a href="/browse"><button  type="button" class="btn btn-primary">Reset</button></a>
+								</div>
+							</div>
 
 						<div class="border p-4 rounded mb-4">
-
-							<div class="mb-4">
-								<h3 class="mb-3 h6 text-uppercase text-black d-block">Collection</h3>
-								<label for="s_sm" class="d-flex">
-									<input type="checkbox" id="s_sm" class="mr-2 mt-1"> <span
-										class="text-black">Pick-up</span>
-								</label>
-								<label for="s_md" class="d-flex">
-									<input type="checkbox" id="s_md" class="mr-2 mt-1"> <span class="text-black">Local
-										delivery</span>
-								</label>
-							</div>
 
 							<div class="mb-4">
 								<h3 class="mb-3 h6 text-uppercase text-black d-block">Search Keyword
@@ -173,6 +176,7 @@
 									</div>
 								</div>
 							</div>
+							
 						</div>
 					</div>
 				</div>
