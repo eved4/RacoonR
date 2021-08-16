@@ -12,6 +12,7 @@ var express = require('express'),
   https = require('https'),
   bcrypt = require('bcryptjs'),
   authRouter = require('./routes/auth'),
+  postcodes = require('node-postcodes.io'),
   path = require('path');
 //passport = require('./config/passport/passport');
 
@@ -310,39 +311,6 @@ app.post(
     failureFlash: true,
   })
 );
-/*
-app.post('/login', async (req, res, next) => {
-  var email = req.body.email;
-  var password = req.body.password;
-  const hash = await hashPassword(password);
-  db.query('SELECT password FROM users WHERE Email = ?', [email], function (err, rows, fields) {
-    if (err) {
-      console.log('Failed to log in');
-      throw err;
-    }
-    // if user not found
-    if (rows.length <= 0) {
-      req.flash('error', 'Email not found!');
-      res.redirect('/loginfailed');
-    } else {
-      // if user found
-      // render to views/user/edit.ejs template file
-      //bcrypt.compare(password, )
-      bcrypt.compare(password, rows[0].password, function (err, result) {
-        if (err) {
-          console.log('That is the wrang password');
-          req.flash('error', 'Incorrect password');
-        } else {
-          console.log('IT WORKED!');
-          req.session.loggedin = true;
-          req.session.name = email;
-          res.redirect('/browse');
-        }
-      });
-    }
-  });
-});
-*/
 
 // REGISTER
 app.get('/register', (req, res, next) => {
@@ -363,60 +331,51 @@ app.post(
   }
 );
 
-/*
-// REGISTER
-// TODO: Validate data and throw error for user if required fields are NULL
-app.post('/register', async function (req, res, next) {
-  var inputData = {
-    FirstName: req.body.firstname,
-    LastName: req.body.lastname,
-    Email: req.body.email,
-    UserName: req.body.username,
-    City: req.body.city,
-    PostCode: req.body.postcode,
-    Country: req.body.country,
-    Password: req.body.password,
-    DateJoined: '2021-10-10',
-  };
-
-  var user = inputData;
-
-  // check unique email address
-  db.query('SELECT * FROM users WHERE email =?', [inputData.Email], function (err, result) {
-    if (err) {
-      db.end();
-      return console.log(err);
-    }
-    if (!result.length) {
-      bcrypt.hash(user.Password, 10, function (err, hash) {
-        if (err) console.log(err);
-        user.Password = hash;
-        console.log(user.password);
-        db.query('INSERT INTO users SET ?', user, function (err) {
-          //saves non-hashed password
-          if (err) console.log(err);
-          console.log('successfull');
-          db.end();
-          res.redirect('/browse');
-        });
-      });
-    } else {
-      db.end();
-      console.log(`Email already exists`);
-      res.redirect('/events');
-    }
-  });
-});
-*/
-
 // ACCOUNT
 
 app.get('/account', isLoggedIn, (req, res, next) => {
   var user = req.session.passport.user;
   var sql = 'SELECT * FROM users WHERE UserID=?';
+  var sqlitemsoffer = "SELECT * FROM items WHERE Type = 'offering' AND UserID=?";
+  var sqlitemswanted = "SELECT * FROM items WHERE Type = 'wanted' AND UserID=?";
+  var sqlevents =
+    'SELECT * FROM events WHERE EventID = (SELECT EventID FROM userfavouriteevent WHERE UserID=?)';
+  var sqlnotifications =
+    'SELECT notifications.CommunityID, notifications.NotificationID, notifications.UserID, notifications.Message, communities.CommunityName FROM notifications INNER JOIN communities ON communities.CommunityID=notifications.CommunityID';
+  var sqlitemsfavourites =
+    'SELECT * FROM items WHERE ItemID IN (SELECT ItemID FROM userfavouriteitem WHERE UserID=?)';
+  var sqlcommunities =
+    'SELECT * FROM communities WHERE CommunityID IN (SELECT CommunityID FROM communitymembers WHERE UserID=?)';
   db.query(sql, user, function (err, data, fields) {
     if (err) throw err;
-    res.render('account', { userData: data });
+    db.query(sqlitemsoffer, user, function (err, dataitems, fields) {
+      if (err) throw err;
+      db.query(sqlitemswanted, user, function (err, datawanteditems, fields) {
+        if (err) throw err;
+        db.query(sqlevents, user, function (err, dataevents, fields) {
+          if (err) throw err;
+          db.query(sqlnotifications, user, function (err, datanotifications, fields) {
+            console.log(datanotifications);
+            if (err) throw err;
+            db.query(sqlitemsfavourites, user, function (err, dataitemsfav, fields) {
+              if (err) throw err;
+              db.query(sqlcommunities, user, function (err, datacommunities, fields) {
+                if (err) throw err;
+                res.render('account', {
+                  userData: data,
+                  itemData: dataitems,
+                  itemwantedData: datawanteditems,
+                  eventData: dataevents,
+                  notificationData: datanotifications,
+                  itemfavData: dataitemsfav,
+                  communityData: datacommunities,
+                });
+              });
+            });
+          });
+        });
+      });
+    });
   });
 });
 
@@ -435,6 +394,39 @@ app.post('/accountgeneral', isLoggedIn, async function (req, res, next) {
     `UPDATE users SET City = "${inputData.City}", PostCode ="${inputData.PostCode}", Country ="${inputData.Country}", Email ="${inputData.Email}", FirstName = "${inputData.FirstName}", LastName = "${inputData.LastName}" WHERE UserID = "${inputData.UserID}"`
   );
   res.redirect('/account');
+});
+
+app.post('/acceptrequest', isLoggedIn, async function (req, res, next) {
+  var inputData = {
+    NotificationID: req.body.notid,
+    UserID: req.body.userid,
+    CommunityID: req.body.commid,
+    OwnerID: req.session.passport.user,
+  };
+  var ID = '00' + `${inputData.CommunityID}` + '0' + `${inputData.UserID}`;
+
+  var sql = `DELETE FROM notifications WHERE NotificationID="${inputData.NotificationID}";`;
+  db.query(
+    `INSERT INTO communitymembers (ID, CommunityID, UserID, Date) VALUES ("${ID}", "${inputData.CommunityID}", "${inputData.UserID}", NOW());`
+  );
+  db.query(sql, function (err, data, fields) {
+    if (err) {
+      console.log('Already in this community');
+    }
+  });
+
+  res.redirect('/account');
+});
+
+app.get('/deleteitems', isLoggedIn, (req, res, next) => {
+  var ItemID = req.query.itemid;
+  var sql = `DELETE FROM items WHERE ItemID = ?`;
+  db.query(sql, ItemID, function (err, data, fields) {
+    if (err) {
+      console.log('You Item does not exist');
+    }
+    res.redirect('/account');
+  });
 });
 
 // Logout user
@@ -479,24 +471,70 @@ app.post('/additem', isLoggedIn, async function (req, res, next) {
 // ITEMS
 app.get('/offeritem', (req, res, next) => {
   var topic = req.query.itemid;
-  var sql = 'SELECT * FROM items WHERE ItemID = ?;';
+  var cat = req.query.category;
+  var sql = `SELECT * FROM items WHERE ItemID = "${topic}"`;
+  var catsql = `SELECT * FROM items WHERE Category = "${cat}" AND Type = 'offering' AND NOT ItemID = "${topic}"`;
+  console.log(catsql);
+  db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    db.query(catsql, function (err, catdata, fields) {
+      if (err) throw err;
+      return res.render('offeritem', { topic: topic, itemData: data, catdata: catdata });
+    });
+  });
+});
+
+app.get('/offeritemloggedin', isLoggedIn, (req, res, next) => {
+  var topic = req.query.itemid;
+  var cat = req.query.category;
+
+  var sql =
+    'SELECT items.UserID, users.Email, items.ImagePath, items.ItemID, items.Title, items.Description FROM items INNER JOIN users ON users.UserID=items.UserID WHERE ItemID=?';
+
+  var catsql = `SELECT * FROM items WHERE Category = "${cat}" AND Type = 'offering' AND NOT ItemID = "${topic}"`;
+
   db.query(sql, topic, function (err, data, fields) {
     if (err) throw err;
-    console.log(data);
-    return res.render('offeritem', { topic: topic, itemData: data });
+    db.query(catsql, function (err, catdata, fields) {
+      if (err) throw err;
+      return res.render('offeritemloggedin', { topic: topic, itemData: data, catdata: catdata });
+    });
+  });
+});
+
+app.get('/offeritemloggedinfav', isLoggedIn, (req, res, next) => {
+  var data = {
+    ItemID: req.query.itemid,
+    UserID: req.session.passport.user,
+  };
+  var ID = '00' + `${data.ItemID}` + '0' + `${data.UserID}`;
+  var sql = `INSERT INTO userfavouriteitem (ID, ItemID, UserID, Date) VALUES ("${ID}", "${data.ItemID}", "${data.UserID}", NOW())`;
+  db.query(sql, function (err, data, fields) {
+    if (err) {
+      console.log('You already like this');
+    }
   });
 });
 
 app.get('/wanteditem', (req, res, next) => {
-  return res.render('wanteditem');
-});
-
-app.get('/offeritemloggedin', isLoggedIn, (req, res, next) => {
-  return res.render('offeritemloggedin');
+  var topic = req.query.itemid;
+  var sql = 'SELECT * FROM items WHERE ItemID = ?;';
+  db.query(sql, topic, function (err, data, fields) {
+    if (err) throw err;
+    console.log(data);
+    return res.render('wanteditem', { topic: topic, itemData: data });
+  });
 });
 
 app.get('/wanteditemloggedin', isLoggedIn, (req, res, next) => {
-  return res.render('wanteditemloggedin');
+  var topic = req.query.itemid;
+  var sql =
+    'SELECT items.UserID, users.Email, items.ItemID, items.Title, items.Description FROM items INNER JOIN users ON users.UserID=items.UserID WHERE ItemID=?';
+  db.query(sql, topic, function (err, data, fields) {
+    if (err) throw err;
+    console.log(data);
+    return res.render('wanteditemloggedin', { topic: topic, itemData: data });
+  });
 });
 
 // COMMUNITIES
@@ -624,6 +662,35 @@ app.get('/community', (req, res, next) => {
   });
 });
 
+app.get('/communityloggedin', isLoggedIn, (req, res, next) => {
+  var topic = req.query.communityid;
+  var userid = req.session.passport.user;
+  var users = 'SELECT * FROM communitymembers WHERE UserID = ? AND CommunityID = ?';
+  var sql = 'SELECT * FROM communities WHERE CommunityID = ?;';
+  var sqlitems = 'SELECT * FROM communityitems WHERE CommunityID = ?;';
+  console.log(topic, userid);
+  db.query(users, [userid, topic], function (err, data, fields) {
+    console.log(data);
+    if (data.length === 0) {
+      db.query(sql, topic, function (err, data, fields) {
+        if (err) throw err;
+        return res.render('communityloggedin', { communityData: data });
+      });
+    } else {
+      db.query(sql, topic, function (err, data, fields) {
+        if (err) throw err;
+        db.query(sqlitems, topic, function (err, dataitems, fields) {
+          if (err) throw err;
+          return res.render('communityloggedinspecific', {
+            communityData: data,
+            communityitemsData: dataitems,
+          });
+        });
+      });
+    }
+  });
+});
+
 app.get('/addcommunity', isLoggedIn, (req, res, next) => {
   return res.render('addcommunity');
 });
@@ -632,12 +699,58 @@ app.get('/communities', (req, res, next) => {
   return res.render('communities');
 });
 
-app.get('/communityform', isLoggedIn, (req, res, next) => {
-  return res.render('communityform');
+app.post('/requestjoin', isLoggedIn, async function (req, res, next) {
+  var inputData = {
+    Message: req.body.message,
+    UserID: req.session.passport.user,
+    CommunityID: req.body.communityid,
+  };
+
+  db.query(
+    `INSERT INTO notifications (CommunityID, UserID, Date, Message) VALUES ("${inputData.CommunityID}", "${inputData.UserID}",NOW(), "${inputData.Message}")`
+  );
+  res.redirect(`communityloggedin?communityid=${inputData.CommunityID}`);
 });
 
-app.get('/communityloggedin', isLoggedIn, (req, res, next) => {
-  return res.render('communityloggedin');
+app.get('/addcommunityitem', isLoggedIn, (req, res, next) => {
+  var category = req.query.category;
+  var id = req.query.communityid;
+  return res.render('addcommunityitem', { category: category, id: id });
+});
+
+app.post('/addcommunityitem', isLoggedIn, async function (req, res, next) {
+  let sampleFile;
+  let uploadPath;
+
+  var inputData = {
+    Type: req.body.type,
+    Title: req.body.title,
+    Description: req.body.description,
+    CommunityID: req.body.communityid,
+    Category: req.body.category,
+    Collection: req.body.collection,
+    UserID: req.session.passport.user,
+    Image: req.body.img,
+  };
+
+  sampleFile = inputData.Image;
+  uploadPath = '/img/test/' + sampleFile;
+
+  db.query(
+    `INSERT INTO communityitems (UserID, Type, Title, Description, Community, CommunityID, Collection, DateAdded, ImagePath) VALUES ("${inputData.UserID}", "${inputData.Type}", "${inputData.Title}", "${inputData.Description}","${inputData.Category}", "${inputData.CommunityID}", "${inputData.Collection}",NOW(), "${uploadPath}")`
+  );
+  res.redirect(`communitiesloggedin?communityid=${inputData.CommunityID}`);
+});
+
+app.get('/communityitem', isLoggedIn, (req, res, next) => {
+  var topic = req.query.itemid;
+  var sql =
+    'SELECT communityitems.UserID, users.Email, communityitems.ImagePath, communityitems.ItemID, communityitems.Title, communityitems.Description FROM communityitems INNER JOIN users ON users.UserID=communityitems.UserID WHERE ItemID=?';
+  db.query(sql, topic, function (err, data, fields) {
+    if (err) throw err;
+    console.log(data);
+    return res.render('communityitem', { topic: topic, itemData: data });
+  });
 });
 
 // EVENTS
@@ -646,7 +759,6 @@ app.get('/event', (req, res, next) => {
   var sql = 'SELECT * FROM events WHERE EventID = ?;';
   db.query(sql, topic, function (err, data, fields) {
     if (err) throw err;
-    console.log(data);
     return res.render('event', { eventData: data });
   });
 });
@@ -659,16 +771,36 @@ app.get('/events', (req, res, next) => {
   });
 });
 
-app.get('/eventsloggedin', (req, res, next) => {
+app.get('/eventsloggedin', isLoggedIn, (req, res, next) => {
   var sql = 'SELECT * FROM events';
   db.query(sql, function (err, data, fields) {
     if (err) throw err;
-    res.render('events', { title: 'Event List', eventData: data });
+    res.render('eventsloggedin', { title: 'Event List', eventData: data });
   });
 });
 
 app.get('/eventloggedin', isLoggedIn, (req, res, next) => {
-  return res.render('eventloggedin');
+  var topic = req.query.eventid;
+  var sql = 'SELECT * FROM events WHERE EventID = ?;';
+  db.query(sql, topic, function (err, data, fields) {
+    if (err) throw err;
+    console.log(data);
+    return res.render('eventloggedin', { eventData: data });
+  });
+});
+
+app.get('/eventloggedinfav', isLoggedIn, (req, res, next) => {
+  var data = {
+    EventID: req.query.eventid,
+    UserID: req.session.passport.user,
+  };
+  var ID = '00' + `${data.EventID}` + '0' + `${data.UserID}`;
+  var sql = `INSERT INTO userfavouriteevent (ID, EventID, UserID, Date) VALUES ("${ID}", "${data.EventID}", "${data.UserID}", NOW())`;
+  db.query(sql, function (err, data, fields) {
+    if (err) {
+      console.log('You already like this');
+    }
+  });
 });
 
 app.get('/addevent', isLoggedIn, (req, res, next) => {

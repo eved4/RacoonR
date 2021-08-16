@@ -70,8 +70,8 @@
 							  <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
 								<div class="block-4 text-center border">
 								  <div class="block-4-text p-4">
-									<h3><a href="/offeritemloggedin"><%=data.Title %> </a></h3>
-									<a href="/offeritemloggedin"><img src="<%=data.ImagePath %>" alt="Image placeholder"
+									<h3><a href="/offeritemloggedin?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><%=data.Title %> </a></h3>
+									<a href="/offeritemloggedin?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><img src="<%=data.ImagePath %>" alt="Image placeholder"
 														  class="img-fluid" loading="lazy"></a>
 									<br />
 									<p class="mb-0"><%=data.Description %></p>
@@ -83,7 +83,7 @@
 									  <%  i++; }) %>
 						<% } else{ %>
 						  <tr>
-							<td colspan="7">No Data Found</td>
+							<td colspan="7">No Items Found</td>
 						  </tr>
 						<% } %>
 						

@@ -17,29 +17,41 @@
       </ul>
     </nav>
 
+    <% if(itemData.length!=0){ var i=1; itemData.forEach(function(data){ %>
+
     <div class="site-wrap bg-light">
       <div class="site-section">
         <div class="container">
           <div class="row">
             <div class="col-md-6">
-              <img src="img/test/chair.jpg" alt="Image" class="img-fluid" />
+              <img src="<%=data.ImagePath %>" alt="Image" class="img-fluid" />
             </div>
             <div class="col-md-6 pt-3">
-              <h2 class="text-black">Chair</h2>
+              <h2 class="text-black"><%=data.Title %></h2>
+              <p><%=data.Description %></p>
               <p>
-                Brand new, just doesn't fit in our flat. Would love for it to go to a new home.
-                Pickup only, address given in private message.
+                <a
+                  href="mailto:<%=data.Email %>?subject=Query about item '<%=data.Title %>'"
+                  class="buy-now btn btn-sm btn-primary"
+                  >Send an email</a
+                >
               </p>
               <p>
-                <a href="/account" class="buy-now btn btn-sm btn-primary">Send a message</a>
-              </p>
-              <p>
-                <a class="btn btn-primary text-light" title="Add to favourites"
+                <a
+                  href="/offeritemloggedinfav?itemid=<%= data.ItemID %>"
+                  class="btn btn-primary text-light"
+                  title="Add to favourites"
                   ><i class="fas fa-heart"></i>
                 </a>
               </p>
             </div>
           </div>
+
+          <% i++; }) %> <% } else{ %>
+          <tr>
+            <td colspan="7">No Item Found</td>
+          </tr>
+          <% } %>
           <div class="row">
             <div class="col-md-12 mb-4 pt-5">
               <div class="card card-cascade narrower">
@@ -51,52 +63,6 @@
                       style="border: 0"
                       allowfullscreen
                     ></iframe>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="container mt-5">
-            <div class="d-flex justify-content-center row">
-              <div class="col-md-12">
-                <div class="d-flex flex-column comment-section">
-                  <div class="bg-white p-2">
-                    <div class="d-flex flex-row align-items-start">
-                      <img
-                        class="rounded-circle"
-                        src="img/avatars/selfie raccoon pexels-david-selbert.jpg"
-                        width="40"
-                      />
-                      <div class="d-flex flex-column justify-content-start ml-2">
-                        <span class="d-block font-weight-bold name">Marry Andrews</span
-                        ><span class="date text-black-50">Shared publicly - Jan 2020</span>
-                      </div>
-                    </div>
-                    <div class="mt-2">
-                      <p class="comment-text">
-                        Love this chair, it looks new. How long have you had it?
-                      </p>
-                    </div>
-                  </div>
-                  <div class="bg-light p-2">
-                    <div class="d-flex flex-row align-items-start">
-                      <img
-                        class="rounded-circle"
-                        src="img/avatars/curious raccoon.jpg"
-                        width="40"
-                      /><textarea class="form-control ml-1 shadow-none textarea"></textarea>
-                    </div>
-                    <div class="mt-2 text-right">
-                      <button class="btn btn-primary btn-sm shadow-none" type="button">
-                        Post comment</button
-                      ><button
-                        class="btn btn-outline-primary btn-sm ml-1 shadow-none"
-                        type="button"
-                      >
-                        Cancel
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -115,56 +81,30 @@
             <div class="site-section">
               <div class="container">
                 <div class="row mb-5 d-flex">
-                  <div class="col-md-10 order-3">
+                  <div class="col-md-12 order-3">
                     <div class="row mb-5">
+                      <% if(catdata.length!=0){ var i=1; catdata.forEach(function(data){ %>
                       <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
                         <div class="block-4 text-center border">
                           <figure class="block-4-image">
                             <a href="/offeritemloggedin"
                               ><img
-                                src="img/test/chair.jpg"
+                                src="<%= data.ImagePath %>"
                                 alt="Image placeholder"
                                 class="img-fluid"
                             /></a>
                           </figure>
                           <div class="block-4-text p-4">
-                            <h3><a href="/offeritemloggedin">Chair</a></h3>
-                            <p class="mb-0">Brand new, just doesn't fit in our flat</p>
+                            <h3><a href="/offeritemloggedin"><%= data.Title %></a></h3>
+                            <p class="mb-0"><%= data.Description %></p>
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                        <div class="block-4 text-center border">
-                          <figure class="block-4-image">
-                            <a href="/offeritemloggedin"
-                              ><img
-                                src="img/test/books.jpg"
-                                alt="Image placeholder"
-                                class="img-fluid"
-                            /></a>
-                          </figure>
-                          <div class="block-4-text p-4">
-                            <h3><a href="/offeritemloggedin">Books</a></h3>
-                            <p class="mb-0">Used books I don't want to read again</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-                        <div class="block-4 text-center border">
-                          <figure class="block-4-image">
-                            <a href="/offeritemloggedin"
-                              ><img
-                                src="img/test/food.jpg"
-                                alt="Image placeholder"
-                                class="img-fluid"
-                            /></a>
-                          </figure>
-                          <div class="block-4-text p-4">
-                            <h3><a href="/offeritemloggedin">Bags of food</a></h3>
-                            <p class="mb-0">Bought for anyone who really needs them</p>
-                          </div>
-                        </div>
-                      </div>
+                      <% i++; }) %> <% } else{ %>
+                      <tr>
+                        <td colspan="7">No Data Found</td>
+                      </tr>
+                      <% } %>
                     </div>
                   </div>
                 </div>

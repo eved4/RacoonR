@@ -3,22 +3,21 @@
   <%- include("partials/head") -%>
 
   <body>
-    <%- include("partials/navigationloggedin", {page:"events"}); -%>
+    <%- include("partials/navigationloggedin", {page:"events"}); -%> <% if(eventData.length!=0){ var
+    i=1; eventData.forEach(function(data){ %>
 
     <div class="site-wrap bg-light">
       <div class="site-section">
         <div class="container">
           <div class="row">
             <div class="col-md-12 pt-3">
-              <h2 class="text-black">Bottle tops needed</h2>
+              <h2 class="text-black"><%=data.EventName %></h2>
+              <p><%=data.Description %></p>
               <p>
-                We are searching for bottle tops for a school art project. Any kind would be great.
-                Please drop any off in the bin outside the school within school hours (9am-3pm).
-                Thank you.
-              </p>
-              <p>The address is Apple Tree Primary, Apple Tree Lane, Aston</p>
-              <p>
-                <a class="btn btn-primary text-light" title="Add to favourites"
+                <a
+                  href="/eventloggedinfav?eventid=<%= data.EventID %>"
+                  class="btn btn-primary text-light"
+                  title="Add to favourites"
                   ><i class="fas fa-heart"></i>
                 </a>
               </p>
@@ -33,6 +32,11 @@
                     class="z-depth-1-half map-container-5"
                     style="height: 300px"
                   >
+                    <% i++; }) %> <% } else{ %>
+                    <tr>
+                      <td colspan="7">No Data Found</td>
+                    </tr>
+                    <% } %>
                     <iframe
                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9716.275418495366!2d-1.8940482058844144!3d52.4959931891886!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4870bb5085730b79%3A0xff37ed7e2a4e9dcc!2sAston%2C%20Birmingham%20B6%204DU!5e0!3m2!1sen!2suk!4v1624274855025!5m2!1sen!2suk"
                       frameborder="0"
