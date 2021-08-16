@@ -50,6 +50,7 @@ module.exports = function (passport) {
               PostCode: req.body.postcode,
               Country: req.body.country,
               Password: req.body.password,
+              Type: req.body.type,
               DateJoined: new Date(),
               //username: username,
               //password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model

@@ -19,13 +19,15 @@
           <!-- Name input -->
           <div class="form-outline mb-4">
             <input type="text" id="user_firstname" class="form-control" name="firstname" />
-            <label class="form-label" for="form3Example1">First name</label>
+            <label class="form-label" for="form3Example1">First name / Organisation name</label>
           </div>
 
           <!-- Surname input -->
           <div class="form-outline mb-4">
             <input type="text" id="user_lastname" class="form-control" name="lastname" />
-            <label class="form-label" for="form3Example2">Last name</label>
+            <label class="form-label" for="form3Example2"
+              >Last name (leave blank if you are an organisation)</label
+            >
           </div>
 
           <!-- Email input -->
@@ -56,6 +58,30 @@
           <div class="form-outline mb-4">
             <input type="password" id="user_password" class="form-control" name="password" />
             <label class="form-label" for="form3Example4">Password</label>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Type</label>
+            <div class="form-group px-5">
+              <label class="switcher">
+                <tr>
+                  <td>Individual</td>
+                  <td>
+                    <input type="radio" name="type" value="individual" checked />
+                  </td>
+                </tr>
+              </label>
+            </div>
+            <div class="form-group px-5">
+              <label class="switcher">
+                <tr>
+                  <td>Organisation</td>
+                  <td>
+                    <input type="radio" name="type" value="organisation" />
+                  </td>
+                </tr>
+              </label>
+            </div>
           </div>
 
           <!-- Submit button -->

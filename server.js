@@ -735,9 +735,13 @@ app.post('/addcommunityitem', isLoggedIn, async function (req, res, next) {
 
   sampleFile = inputData.Image;
   uploadPath = '/img/test/' + sampleFile;
+  var message = `A new item '${inputData.Title}' has been added to the community '${inputData.Category}'`;
 
   db.query(
     `INSERT INTO communityitems (UserID, Type, Title, Description, Community, CommunityID, Collection, DateAdded, ImagePath) VALUES ("${inputData.UserID}", "${inputData.Type}", "${inputData.Title}", "${inputData.Description}","${inputData.Category}", "${inputData.CommunityID}", "${inputData.Collection}",NOW(), "${uploadPath}")`
+  );
+  db.query(
+    `INSERT INTO notifications (CommunityID, UserID, Message, Date)  VALUES ("${inputData.CommunityID}", "${inputData.UserID}", "${message}", NOW())`
   );
   res.redirect(`communitiesloggedin?communityid=${inputData.CommunityID}`);
 });
