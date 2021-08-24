@@ -8,7 +8,7 @@
 
       <!-- Register -->
 
-      <div class="container center_div bg-light rounded shadow-lg">
+      <div class="container center_div bg-light rounded shadow-lg w-50">
         <!-- Main Page Heading -->
 
         <div class="col-12 text-center mt-5">
@@ -18,7 +18,13 @@
         <form action="/register" method="POST" class="pt-4 .center_div">
           <!-- Name input -->
           <div class="form-outline mb-4">
-            <input type="text" id="user_firstname" class="form-control" name="firstname" />
+            <input
+              type="text"
+              id="user_firstname"
+              class="form-control"
+              name="firstname"
+              required="required"
+            />
             <label class="form-label" for="form3Example1">First name / Organisation name</label>
           </div>
 
@@ -32,31 +38,61 @@
 
           <!-- Email input -->
           <div class="form-outline mb-4">
-            <input type="email" id="user_email" class="form-control" name="email" />
+            <input
+              type="email"
+              id="user_email"
+              class="form-control"
+              name="email"
+              required="required"
+            />
             <label class="form-label" for="form3Example3">Email address</label>
           </div>
 
           <!-- city input -->
           <div class="form-outline mb-4">
-            <input type="text" id="user_name" class="form-control" name="city" />
+            <input
+              type="text"
+              id="user_name"
+              class="form-control"
+              name="city"
+              required="required"
+            />
             <label class="form-label" for="form3Example3">City</label>
           </div>
 
           <!-- postcode input -->
           <div class="form-outline mb-4">
-            <input type="text" id="user_name" class="form-control" name="postcode" />
+            <input
+              type="text"
+              id="user_name"
+              class="form-control"
+              name="postcode"
+              required="required"
+            />
             <label class="form-label" for="form3Example3">Postcode</label>
           </div>
 
           <!-- country input -->
           <div class="form-outline mb-4">
-            <input type="text" id="user_name" class="form-control" name="country" />
+            <input
+              type="text"
+              id="user_name"
+              class="form-control"
+              name="country"
+              required="required"
+            />
             <label class="form-label" for="form3Example3">Country</label>
           </div>
 
           <!-- Password input -->
           <div class="form-outline mb-4">
-            <input type="password" id="user_password" class="form-control" name="password" />
+            <input
+              type="password"
+              id="user_password"
+              class="form-control"
+              name="password"
+              required="required"
+            />
             <label class="form-label" for="form3Example4">Password</label>
           </div>
 
@@ -96,40 +132,7 @@
           </div>
 
           <!-- Register buttons -->
-          <div class="text-center py-5">
-            <p>or sign up with:</p>
-            <button
-              type="button"
-              class="btn btn-primary btn-floating mx-1"
-              style="background-color: #199e0f; border: none"
-            >
-              <i class="fab fa-facebook-f"></i>
-            </button>
-
-            <button
-              type="button"
-              class="btn btn-primary btn-floating mx-1"
-              style="background-color: #199e0f; border: none"
-            >
-              <i class="fab fa-google"></i>
-            </button>
-
-            <button
-              type="button"
-              class="btn btn-primary btn-floating mx-1"
-              style="background-color: #199e0f; border: none"
-            >
-              <i class="fab fa-twitter"></i>
-            </button>
-
-            <button
-              type="button"
-              class="btn btn-primary btn-floating mx-1"
-              style="background-color: #199e0f; border: none"
-            >
-              <i class="fab fa-github"></i>
-            </button>
-          </div>
+          <div class="text-center py-5"></div>
         </form>
       </div>
       <br /><br /><br /><br />

@@ -13,8 +13,37 @@ var express = require('express'),
   bcrypt = require('bcryptjs'),
   authRouter = require('./routes/auth'),
   postcodes = require('node-postcodes.io'),
-  path = require('path');
+  path = require('path'),
+  NodeGeocoder = require('node-geocoder');
 //passport = require('./config/passport/passport');
+
+var NodeGeocoder = require('node-geocoder');
+const maps_api_key = 'AIzaSyBTFcbros0cp5ZPj4Fg0eKvp8P1liXV0Ms';
+
+const options = {
+  provider: 'google',
+  // Optional depending on the providers
+  //fetch: customFetchImplementation,
+  apiKey: maps_api_key, // Google
+  formatter: null, // 'gpx', 'string', ...
+};
+
+const geocoder = NodeGeocoder(options);
+
+function successCallback(result) {
+  console.log('<<<<<TAGGER>>>>');
+  console.log('Location Found: ');
+  console.log(result);
+  console.log('<<<<<TAGGER>>>>');
+  return result;
+}
+
+function failureCallback(error) {
+  console.log('<<<<<TAGGER>>>>');
+  console.error('Location not found.' + error);
+  console.log('<<<<<TAGGER>>>>');
+  return false;
+}
 
 var app = express();
 app.use(flash());
@@ -55,6 +84,7 @@ function isLoggedIn(req, res, next) {
 // database connection
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
+
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -85,6 +115,8 @@ app.get('', (req, res) => {
 });
 
 // BROWSE
+// QUERY FOR FINDING USERS NEAR ME
+// SELECT * FROM `users` WHERE ST_Distance(`users`.`GeoLocation`, (SELECT `GeoLocation` FROM `users` WHERE `users`.`UserID` = 1)) <= 0.1 AND `users`.`UserID` != 1
 
 app.get('/browseloggedin', isLoggedIn, (req, res, next) => {
   var sql = "SELECT * FROM items WHERE Type='offering'";
@@ -182,6 +214,30 @@ app.post('/searchbrowse', (req, res, next) => {
   db.query(sql, search, function (err, data, fields) {
     if (err) throw err;
     res.render('browse', { title: 'Item List', itemData: data });
+  });
+});
+
+// SELECT * FROM `items` WHERE ST_Distance((SELECT `Geolocation` FROM `users` WHERE `UserID` = `items`.`UserID`), (SELECT `GeoLocation` FROM `users` WHERE `users`.`UserID` = 1)) <= 0.1 AND `items`.`UserID` != 1
+
+app.get('/browsemap', isLoggedIn, (req, res, next) => {
+  var sql = `SELECT GeoLocation FROM users WHERE UserID=${req.session.passport.user}`;
+  console.log(req.session.passport);
+  //var proxsql = `SELECT * FROM \`items\` WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user}`;
+  var proxsql = `SELECT items.*, users.GeoLocation FROM items INNER JOIN users ON items.UserID = users.UserID WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user}`;
+  /*db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsemap', { title: 'Item List', itemData: data });
+  });*/
+  db.query(sql, function (err, userData, fields) {
+    db.query(proxsql, function (err, itemData, fields) {
+      if (err) throw err;
+      console.log(itemData);
+      res.render('browsemap', {
+        title: 'Item List',
+        itemData: itemData,
+        userData: userData,
+      });
+    });
   });
 });
 
@@ -326,7 +382,6 @@ app.post(
     failureFlash: true,
   }),
   function (req, res) {
-    console.log('EAT MY SHORTS');
     console.log(res);
   }
 );
@@ -472,14 +527,24 @@ app.post('/additem', isLoggedIn, async function (req, res, next) {
 app.get('/offeritem', (req, res, next) => {
   var topic = req.query.itemid;
   var cat = req.query.category;
+  var locsql = `SELECT GeoLocation FROM users WHERE UserID = (SELECT UserID from items WHERE ItemID = "${topic}")`;
   var sql = `SELECT * FROM items WHERE ItemID = "${topic}"`;
-  var catsql = `SELECT * FROM items WHERE Category = "${cat}" AND Type = 'offering' AND NOT ItemID = "${topic}"`;
+  var catsql = `SELECT * FROM items WHERE Category = "${cat}" AND Type = 'offering' AND NOT ItemID = "${topic}" LIMIT 3`;
   console.log(catsql);
   db.query(sql, function (err, data, fields) {
     if (err) throw err;
     db.query(catsql, function (err, catdata, fields) {
       if (err) throw err;
-      return res.render('offeritem', { topic: topic, itemData: data, catdata: catdata });
+      db.query(locsql, function (err, locdata, fields) {
+        if (err) throw err;
+        console.log(locdata);
+        return res.render('offeritem', {
+          topic: topic,
+          itemData: data,
+          catdata: catdata,
+          locdata: locdata,
+        });
+      });
     });
   });
 });
@@ -491,7 +556,7 @@ app.get('/offeritemloggedin', isLoggedIn, (req, res, next) => {
   var sql =
     'SELECT items.UserID, users.Email, items.ImagePath, items.ItemID, items.Title, items.Description FROM items INNER JOIN users ON users.UserID=items.UserID WHERE ItemID=?';
 
-  var catsql = `SELECT * FROM items WHERE Category = "${cat}" AND Type = 'offering' AND NOT ItemID = "${topic}"`;
+  var catsql = `SELECT * FROM items WHERE Category = "${cat}" AND Type = 'offering' AND NOT ItemID = "${topic}" LIMIT 3`;
 
   db.query(sql, topic, function (err, data, fields) {
     if (err) throw err;

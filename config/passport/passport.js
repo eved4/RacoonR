@@ -1,7 +1,35 @@
 var bcrypt = require('bcryptjs');
+var NodeGeocoder = require('node-geocoder');
 const passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mysql = require('mysql');
+
+const maps_api_key = 'AIzaSyBTFcbros0cp5ZPj4Fg0eKvp8P1liXV0Ms';
+
+const options = {
+  provider: 'google',
+  // Optional depending on the providers
+  //fetch: customFetchImplementation,
+  apiKey: maps_api_key, // Google
+  formatter: null, // 'gpx', 'string', ...
+};
+
+const geocoder = NodeGeocoder(options);
+
+function successCallback(result) {
+  console.log('<<<<<TAGGER>>>>');
+  console.log('Location Found: ');
+  console.log(result);
+  console.log('<<<<<TAGGER>>>>');
+  return result;
+}
+
+function failureCallback(error) {
+  console.log('<<<<<TAGGER>>>>');
+  console.error('Location not found.' + error);
+  console.log('<<<<<TAGGER>>>>');
+  return false;
+}
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -35,54 +63,60 @@ module.exports = function (passport) {
       function (req, email, password, done) {
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        connection.query('SELECT * FROM users WHERE Email = ?', [email], function (err, rows) {
-          if (err) return done(err);
-          if (rows.length) {
-            return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-          } else {
-            // if there is no user with that username
-            // create the user
-            var newUserMysql = {
-              FirstName: req.body.firstname,
-              LastName: req.body.lastname,
-              Email: req.body.email,
-              City: req.body.city,
-              PostCode: req.body.postcode,
-              Country: req.body.country,
-              Password: req.body.password,
-              Type: req.body.type,
-              DateJoined: new Date(),
-              //username: username,
-              //password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
-            };
-
-            bcrypt.hash(newUserMysql.Password, 10, function (err, hash) {
-              if (err) console.log(err);
-              else {
-                newUserMysql.Password = hash;
-                var insertQuery = 'INSERT INTO users SET ?';
-                connection.query(insertQuery, newUserMysql, function (err, rows) {
-                  //newUserMysql.id = rows.UserName;
-                  if (err) return done(err);
-                  else {
-                    connection.query(
-                      'SELECT * FROM users WHERE Email = ?',
-                      [email],
-                      function (err, rows, fields) {
-                        if (err) return done(err);
-                        if (rows.length) {
-                          console.log('>>>RETURNING USER<<<');
-                          console.log(rows[0]);
-                          return done(null, rows[0]);
+        geocoder.geocode(req.body.postcode).then(function (result) {
+          connection.query('SELECT * FROM users WHERE Email = ?', [email], function (err, rows) {
+            if (err) return done(err);
+            if (rows.length) {
+              return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+            } else {
+              // if there is no user with that username
+              // create the user
+              GeoLocation = `ST_PointFromText('POINT(${result[0].latitude} ${result[0].longitude})')`;
+              //GeoLocation = `Point(${result[0].latitude} ${result[0].longitude})`;
+              var newUserMysql = {
+                FirstName: req.body.firstname,
+                LastName: req.body.lastname,
+                Email: req.body.email,
+                City: req.body.city,
+                PostCode: req.body.postcode,
+                Country: req.body.country,
+                Password: req.body.password,
+                Type: req.body.type,
+                DateJoined: new Date(),
+                //username: username,
+                //password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
+              };
+              bcrypt.hash(newUserMysql.Password, 10, function (err, hash) {
+                if (err) console.log(err);
+                else {
+                  newUserMysql.Password = hash;
+                  console.log(newUserMysql);
+                  var insertQuery = `INSERT INTO users SET ?, \`GeoLocation\` = ${GeoLocation}`;
+                  connection.query(insertQuery, newUserMysql, function (err, rows) {
+                    //newUserMysql.id = rows.UserName;
+                    if (err) {
+                      console.log(this.sql);
+                      return done(err);
+                    } else {
+                      connection.query(
+                        'SELECT * FROM users WHERE Email = ?',
+                        [email],
+                        function (err, rows, fields) {
+                          if (err) return done(err);
+                          if (rows.length) {
+                            console.log('>>>RETURNING USER<<<');
+                            console.log(rows[0]);
+                            return done(null, rows[0]);
+                          }
                         }
-                      }
-                    );
-                  }
-                });
-              }
-            });
-          }
-        });
+                      );
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }, failureCallback);
       }
     )
   );

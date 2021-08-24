@@ -8,7 +8,10 @@
 
       <!-- Login -->
 
-      <div class="container center_div bg-light rounded shadow-lg">
+      <div
+        class="container center_div bg-light rounded shadow-lg"
+        style="min-width: 10%; height: auto"
+      >
         <div class="col-12 text-center mt-5">
           <h1 class="text-dark pt-4">Login</h1>
           <div class="border-top border-primary d-none d-lg-block w-25 mx-auto my-3"></div>
@@ -17,13 +20,25 @@
         <form action="/login" method="POST" class="pt-4 .center_div">
           <!-- Email input -->
           <div class="form-outline mb-4">
-            <input type="input" id="form2Example1" class="form-control" name="email" />
+            <input
+              type="input"
+              id="form2Example1"
+              class="form-control"
+              name="email"
+              required="required"
+            />
             <label class="form-label" for="form2Example1">Email</label>
           </div>
 
           <!-- Password input -->
           <div class="form-outline mb-4">
-            <input type="password" id="form2Example2" class="form-control" name="password" />
+            <input
+              type="password"
+              id="form2Example2"
+              class="form-control"
+              name="password"
+              required="required"
+            />
             <label class="form-label" for="form2Example2">Password</label>
           </div>
           <div class="row mb-4">
@@ -61,38 +76,6 @@
         <!-- Register buttons -->
         <div class="text-center py-5">
           <p>Not a member? <a href="/register">Register</a></p>
-          <p>or sign up with:</p>
-          <button
-            type="button"
-            class="btn btn-primary btn-floating mx-1"
-            style="background-color: #199e0f; border: none"
-          >
-            <i class="fab fa-facebook-f"></i>
-          </button>
-
-          <button
-            type="button"
-            class="btn btn-primary btn-floating mx-1"
-            style="background-color: #199e0f; border: none"
-          >
-            <i class="fab fa-google"></i>
-          </button>
-
-          <button
-            type="button"
-            class="btn btn-primary btn-floating mx-1"
-            style="background-color: #199e0f; border: none"
-          >
-            <i class="fab fa-twitter"></i>
-          </button>
-
-          <button
-            type="button"
-            class="btn btn-primary btn-floating mx-1"
-            style="background-color: #199e0f; border: none"
-          >
-            <i class="fab fa-github"></i>
-          </button>
         </div>
       </div>
       <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
