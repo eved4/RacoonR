@@ -135,9 +135,13 @@ app.get('/browselogcat', (req, res, next) => {
   });
 });
 
-app.get('/browselogsort', (req, res, next) => {
-  // var user = req.session.passport.user;
+app.get('/browselogsort', isLoggedIn, (req, res, next) => {
+  var user = req.session.passport.user;
   var sort = req.query.sort;
+  if (sort == 'distance') {
+    //var sql = `SELECT GeoLocation FROM users WHERE UserID=${req.session.passport.user}`;
+    var sql = `SELECT items.*, users.GeoLocation, ST_Distance((SELECT Geolocation FROM users WHERE UserID = items.UserID), (SELECT GeoLocation FROM users WHERE users.UserID =${user})) AS TempField FROM items INNER JOIN users ON items.UserID = users.UserID WHERE items.UserID != ${user}  AND items.Type='offering' ORDER BY TempField`;
+  }
   if (sort == 'atoz') {
     var sql = "SELECT * FROM items WHERE Type='offering' ORDER BY Title";
   }
@@ -152,11 +156,35 @@ app.get('/browselogsort', (req, res, next) => {
     res.render('browseloggedin', { title: 'Item List', itemData: data });
   });
 });
+//TODO
+
+app.get('/browsemap', isLoggedIn, (req, res, next) => {
+  var sql = `SELECT GeoLocation FROM users WHERE UserID=${req.session.passport.user}`;
+
+  //var proxsql = `SELECT * FROM \`items\` WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user}`;
+  var proxsql = `SELECT items.*, users.GeoLocation FROM items INNER JOIN users ON items.UserID = users.UserID WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user}  AND items.Type='offering'`;
+  /*db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsemap', { title: 'Item List', itemData: data });
+  });*/
+  db.query(sql, function (err, userData, fields) {
+    db.query(proxsql, function (err, itemData, fields) {
+      if (err) throw err;
+      console.log(itemData);
+      res.render('browsemap', {
+        title: 'Item List',
+        itemData: itemData,
+        userData: userData,
+      });
+    });
+  });
+});
 
 app.get('/browse', (req, res, next) => {
   var sql = "SELECT * FROM items WHERE Type='offering'";
   db.query(sql, function (err, data, fields) {
     if (err) throw err;
+
     res.render('browse', { title: 'Item List', itemData: data });
   });
 });
@@ -223,7 +251,7 @@ app.get('/browsemap', isLoggedIn, (req, res, next) => {
   var sql = `SELECT GeoLocation FROM users WHERE UserID=${req.session.passport.user}`;
   console.log(req.session.passport);
   //var proxsql = `SELECT * FROM \`items\` WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user}`;
-  var proxsql = `SELECT items.*, users.GeoLocation FROM items INNER JOIN users ON items.UserID = users.UserID WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user}`;
+  var proxsql = `SELECT items.*, users.GeoLocation FROM items INNER JOIN users ON items.UserID = users.UserID WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user}  AND items.Type='offering'`;
   /*db.query(sql, function (err, data, fields) {
     if (err) throw err;
     res.render('browsemap', { title: 'Item List', itemData: data });
@@ -233,6 +261,28 @@ app.get('/browsemap', isLoggedIn, (req, res, next) => {
       if (err) throw err;
       console.log(itemData);
       res.render('browsemap', {
+        title: 'Item List',
+        itemData: itemData,
+        userData: userData,
+      });
+    });
+  });
+});
+
+app.get('/browsewantedmap', isLoggedIn, (req, res, next) => {
+  var sql = `SELECT GeoLocation FROM users WHERE UserID=${req.session.passport.user}`;
+  console.log(req.session.passport);
+  //var proxsql = `SELECT * FROM \`items\` WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user}`;
+  var proxsql = `SELECT items.*, users.GeoLocation FROM items INNER JOIN users ON items.UserID = users.UserID WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user} AND items.Type='wanted'`;
+  /*db.query(sql, function (err, data, fields) {
+    if (err) throw err;
+    res.render('browsemap', { title: 'Item List', itemData: data });
+  });*/
+  db.query(sql, function (err, userData, fields) {
+    db.query(proxsql, function (err, itemData, fields) {
+      if (err) throw err;
+      console.log(itemData);
+      res.render('browsewantedmap', {
         title: 'Item List',
         itemData: itemData,
         userData: userData,
@@ -394,7 +444,7 @@ app.get('/account', isLoggedIn, (req, res, next) => {
   var sqlitemsoffer = "SELECT * FROM items WHERE Type = 'offering' AND UserID=?";
   var sqlitemswanted = "SELECT * FROM items WHERE Type = 'wanted' AND UserID=?";
   var sqlevents =
-    'SELECT * FROM events WHERE EventID = (SELECT EventID FROM userfavouriteevent WHERE UserID=?)';
+    'SELECT * FROM events WHERE EventID IN (SELECT EventID FROM userfavouriteevent WHERE UserID=?)';
   var sqlnotifications =
     'SELECT notifications.CommunityID, notifications.NotificationID, notifications.UserID, notifications.Message, communities.CommunityName FROM notifications INNER JOIN communities ON communities.CommunityID=notifications.CommunityID';
   var sqlitemsfavourites =
@@ -552,17 +602,24 @@ app.get('/offeritem', (req, res, next) => {
 app.get('/offeritemloggedin', isLoggedIn, (req, res, next) => {
   var topic = req.query.itemid;
   var cat = req.query.category;
-
-  var sql =
-    'SELECT items.UserID, users.Email, items.ImagePath, items.ItemID, items.Title, items.Description FROM items INNER JOIN users ON users.UserID=items.UserID WHERE ItemID=?';
-
+  var locsql = `SELECT GeoLocation FROM users WHERE UserID = (SELECT UserID from items WHERE ItemID = "${topic}")`;
+  var sql = `SELECT * FROM items WHERE ItemID = "${topic}"`;
   var catsql = `SELECT * FROM items WHERE Category = "${cat}" AND Type = 'offering' AND NOT ItemID = "${topic}" LIMIT 3`;
-
-  db.query(sql, topic, function (err, data, fields) {
+  console.log(catsql);
+  db.query(sql, function (err, data, fields) {
     if (err) throw err;
     db.query(catsql, function (err, catdata, fields) {
       if (err) throw err;
-      return res.render('offeritemloggedin', { topic: topic, itemData: data, catdata: catdata });
+      db.query(locsql, function (err, locdata, fields) {
+        if (err) throw err;
+        console.log(locdata);
+        return res.render('offeritemloggedin', {
+          topic: topic,
+          itemData: data,
+          catdata: catdata,
+          locdata: locdata,
+        });
+      });
     });
   });
 });
@@ -583,22 +640,51 @@ app.get('/offeritemloggedinfav', isLoggedIn, (req, res, next) => {
 
 app.get('/wanteditem', (req, res, next) => {
   var topic = req.query.itemid;
-  var sql = 'SELECT * FROM items WHERE ItemID = ?;';
-  db.query(sql, topic, function (err, data, fields) {
+  var cat = req.query.category;
+  var locsql = `SELECT GeoLocation FROM users WHERE UserID = (SELECT UserID from items WHERE ItemID = "${topic}")`;
+  var sql = `SELECT * FROM items WHERE ItemID = "${topic}"`;
+  var catsql = `SELECT * FROM items WHERE Category = "${cat}" AND Type = 'wanted' AND NOT ItemID = "${topic}" LIMIT 3`;
+  console.log(catsql);
+  db.query(sql, function (err, data, fields) {
     if (err) throw err;
-    console.log(data);
-    return res.render('wanteditem', { topic: topic, itemData: data });
+    db.query(catsql, function (err, catdata, fields) {
+      if (err) throw err;
+      db.query(locsql, function (err, locdata, fields) {
+        if (err) throw err;
+        console.log(locdata);
+        return res.render('wanteditem', {
+          topic: topic,
+          itemData: data,
+          catdata: catdata,
+          locdata: locdata,
+        });
+      });
+    });
   });
 });
 
 app.get('/wanteditemloggedin', isLoggedIn, (req, res, next) => {
   var topic = req.query.itemid;
-  var sql =
-    'SELECT items.UserID, users.Email, items.ItemID, items.Title, items.Description FROM items INNER JOIN users ON users.UserID=items.UserID WHERE ItemID=?';
-  db.query(sql, topic, function (err, data, fields) {
+  var cat = req.query.category;
+  var locsql = `SELECT GeoLocation FROM users WHERE UserID = (SELECT UserID from items WHERE ItemID = "${topic}")`;
+  var sql = `SELECT * FROM items WHERE ItemID = "${topic}"`;
+  var catsql = `SELECT * FROM items WHERE Category = "${cat}" AND Type = 'wanted' AND NOT ItemID = "${topic}" LIMIT 3`;
+  console.log(catsql);
+  db.query(sql, function (err, data, fields) {
     if (err) throw err;
-    console.log(data);
-    return res.render('wanteditemloggedin', { topic: topic, itemData: data });
+    db.query(catsql, function (err, catdata, fields) {
+      if (err) throw err;
+      db.query(locsql, function (err, locdata, fields) {
+        if (err) throw err;
+        console.log(locdata);
+        return res.render('wanteditemloggedin', {
+          topic: topic,
+          itemData: data,
+          catdata: catdata,
+          locdata: locdata,
+        });
+      });
+    });
   });
 });
 
@@ -833,7 +919,7 @@ app.get('/event', (req, res, next) => {
 });
 
 app.get('/events', (req, res, next) => {
-  var sql = 'SELECT * FROM events';
+  var sql = 'SELECT * FROM events WHERE events.Date > NOW()';
   db.query(sql, function (err, data, fields) {
     if (err) throw err;
     res.render('events', { title: 'Event List', eventData: data });
@@ -841,7 +927,9 @@ app.get('/events', (req, res, next) => {
 });
 
 app.get('/eventsloggedin', isLoggedIn, (req, res, next) => {
-  var sql = 'SELECT * FROM events';
+  var user = req.session.passport.user;
+  var sql = `SELECT events.*, users.GeoLocation FROM events INNER JOIN users ON events.Author = users.UserID WHERE ST_Distance((SELECT Geolocation FROM users WHERE UserID = events.Author), (SELECT GeoLocation FROM users WHERE users.UserID = ${user})) <= 100 AND events.Author != ${user} AND events.Date >= NOW() ORDER BY events.Date`;
+
   db.query(sql, function (err, data, fields) {
     if (err) throw err;
     res.render('eventsloggedin', { title: 'Event List', eventData: data });

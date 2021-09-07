@@ -50,21 +50,54 @@
             </tr>
             <% } %>
 
-            <div class="col-md-12">
+            <div class="col-md-12 mb-4 pt-5">
               <div class="card card-cascade narrower">
                 <div class="card-body card-body-cascade text-center">
-                  <div
-                    id="map-container-google-9"
-                    class="z-depth-1-half map-container-5"
-                    style="height: 300px"
-                  >
-                    <iframe
+                  <div id="map-container-google-9"></div>
+                  <!--iframe
                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9716.275418495366!2d-1.8940482058844144!3d52.4959931891886!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4870bb5085730b79%3A0xff37ed7e2a4e9dcc!2sAston%2C%20Birmingham%20B6%204DU!5e0!3m2!1sen!2suk!4v1624274855025!5m2!1sen!2suk"
                       frameborder="0"
                       style="border: 0"
                       allowfullscreen
-                    ></iframe>
-                  </div>
+                    ></iframe-->
+                  <div id="map" class="z-depth-1-half map-container-5"></div>
+                  <% if(locdata.length!=0){ locdata.forEach(function(data) {%>
+                  <script>
+                    var lat = parseFloat('<%= data.GeoLocation.x %>');
+                    var lng = parseFloat('<%= data.GeoLocation.y %>');
+                    console.log(lat, lng);
+                    console.log(typeof lat);
+                    function initMap() {
+                      var options = {
+                        zoom: 12,
+                        center: { lat: lat, lng: lng },
+                      };
+                      var map = new google.maps.Map(document.getElementById('map'), options);
+                      addMarker({ lat: lat, lng: lng }, "<h1> Nanny's house! </h1>", map);
+                    }
+
+                    function addMarker(coords, info, map) {
+                      var marker = new google.maps.Marker({
+                        position: coords,
+                        map: map,
+                      });
+
+                      var infoWindow = new google.maps.InfoWindow({
+                        content: info,
+                      });
+
+                      marker.addListener('click', function () {
+                        infoWindow.open(map, marker);
+                      });
+                    }
+                  </script>
+                  <script
+                    async
+                    defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTFcbros0cp5ZPj4Fg0eKvp8P1liXV0Ms&callback=initMap"
+                  ></script>
+                  <%})}%>
+                  <!--/div-->
                 </div>
               </div>
             </div>
@@ -82,37 +115,7 @@
     </div>
 
     <!-- Start Footer -->
-    <footer>
-      <div class="container">
-        <div class="row text-light text-center py-4 justify-content-center">
-          <div class="col-sm-10 col-md-8 col-lg-6">
-            <h4>Find us on our Socials</h4>
-            <ul class="social pt-3">
-              <li>
-                <a href="#" target="-blank"><i class="fab fa-facebook"></i></a>
-              </li>
-              <li>
-                <a href="#" target="-blank"><i class="fab fa-twitter"></i></a>
-              </li>
-              <li>
-                <a href="#" target="-blank"><i class="fab fa-instagram"></i></a>
-              </li>
-              <li>
-                <a href="#" target="-blank"><i class="fab fa-youtube"></i></a>
-              </li>
-            </ul>
-            <p class="pt-4">
-              &copy;
-              <a
-                href="https://www.ibm.com/uk-en?p1=Search&p4=43700052448841159&p5=e&gclid=CjwKCAjwt8uGBhBAEiwAayu_9RiWGlIK-td-ZExRQ7Ez-MLdqCXJbzrivRuE1uDkvki01kXlk2TFpxoCG-EQAvD_BwE&gclsrc=aw.ds"
-                target="_black"
-                >www.ibm.com</a
-              >
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <%- include("partials/footer") -%>
 
     <!-- End Footer -->
     <!-- jQuery -->

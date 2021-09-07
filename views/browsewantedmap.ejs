@@ -11,10 +11,10 @@
 
 		<ul class="nav nav-tabs">
 			<li class="nav-item">
-				<a class="nav-link active" aria-current="page" href="/browseloggedin">Offers</a>
+				<a class="nav-link" aria-current="page" href="/browseloggedin">Offers</a>
 			</li>
 			<li class=" nav-item">
-				<a class="nav-link" href="/browsewantedloggedin">Wanted</a>
+				<a class="nav-link active" href="/browsewantedloggedin">Wanted</a>
 			</li>
 		</ul>
 
@@ -31,17 +31,14 @@
 							<div class="col-md-12 mb-5">
 
 								<div class="col-12 text-center mt-2 bg-light">
-									<h1 class="text-dark">Offers</h1>
+									<h1 class="text-dark">Wanted</h1>
 									<div class="border-top border-primary d-none d-lg-block w-25 mx-auto my-3">
 									</div>
-									<p class="lead">Browse items in your community that are being
-										donated
-										and give them
-										a new home</p>
+									<p class="lead">Browse items that others in your community are searching for and see if you can help them oute</p>
 								</div>
 
 								<div class="px-5 py-3">
-									<a href="/browseloggedin"><button type="button" class="btn btn-primary">List View</button></a>
+									<a href="/browsewantedloggedin"><button type="button" class="btn btn-primary">List View</button></a>
 								</div>
 
 								<div>
@@ -115,13 +112,15 @@
 							
 							
 								  <div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
-									<div class="block-4 text-center border" style="height: 100%;">
+									<div class="block-4 text-center border">
 									  <div class="block-4-text p-4">
 																			
 										<h3><a href="/offeritem?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><%=data.Title %> </a></h3>
 										<a href="/offeritem?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><img src="<%=data.ImagePath %>" alt="Image placeholder"
 															  class="img-fluid" loading="lazy"></a>
 										<br />
+										<p class="mb-0"><%=data.Description %></p>
+										<p class="mb-0"></p><%=data.Category %></p>
 									  </div>
 									</div>
 								  </div>
