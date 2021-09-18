@@ -25,6 +25,12 @@
                   </div>
                 </div>
               </div>
+
+              <div class="col-12 text-center mt-2 bg-light pb-4">
+                <p class="lead">Add an event</p>
+                <a class="btn btn-primary" href="/addevent"><i class="fas fa-plus"></i> </a>
+              </div>
+
               <div class="row mb-5">
                 <% if(eventData.length!=0){ var i=1; eventData.forEach(function(data){ %>
 
@@ -40,7 +46,7 @@
                       <br />
                       <p class="mb-0"><%=data.Description %></p>
                       <br />
-                      <p class="mb-0"><%=data.Date %></p>
+                      <p class="mb-0"><%var date = (String(data.Date))%> <%= date.slice(0, 16)%></p>
                     </div>
                   </div>
                 </div>
@@ -50,11 +56,6 @@
                   <td colspan="7">No Data Found</td>
                 </tr>
                 <% } %>
-              </div>
-
-              <div class="col-12 text-center mt-2 bg-light pt-5">
-                <p class="lead">Add an event</p>
-                <a class="btn btn-primary" href="/addevent"><i class="fas fa-plus"></i> </a>
               </div>
             </div>
           </div>

@@ -251,11 +251,18 @@ th {
 }
 
 label {
-  display: inline-block;
+  display: inline-block !important;
+  width: 140px;
+  text-align: right;
   margin-bottom: 0.5rem;
 }
 
-button {
+.form-element label {
+  display: inline-block;
+  width: 150px;
+}
+
+​ button {
   border-radius: 0;
 }
 

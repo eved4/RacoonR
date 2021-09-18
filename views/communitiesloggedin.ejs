@@ -22,23 +22,36 @@
 									<p class="lead">Find like-minded communities to join and give items a second (or
 										third) life</p>
 								</div>
+							</div>
+						</div>
 
-								<div class="d-flex">
-									<div class="btn-group">
-										<button type="button" class="btn btn-secondary btn-sm dropdown-toggle"
-											id="dropdownMenuReference" data-toggle="dropdown">Reference</button>
-										<div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-											<a class="dropdown-item" href="/communitieslogsort?sort=atoz">Name, A to Z</a>
-											<a class="dropdown-item" href="/communitieslogsort?sort=ztoa">Name, Z to A</a>
-											<a class="dropdown-item" href="/communitieslogsort?sort=distance">Distance, nearest
-												first</a>
-											<a class="dropdown-item" href="/communitieslogsort?sort=date">Date added, newest
-												first</a>
-										</div>
-									</div>
+						<div class="pb-4">
+							<form class="form-inline" action="searchcomlog" method="POST" >
+								<div class="form-outline">
+									<input type="search" id="form1" class="form-control input-group" placeholder="Search keyword..." name="search" />
+									
+									<button type="submit" class="btn btn-primary">
+										<i class="fas fa-search"></i>
+									</button>	
+								</div>										
+							</form>
+						</div>
+
+						<div class="d-flex pb-4">
+							<div class="btn-group">
+								<button type="button" class="btn btn-secondary btn-sm dropdown-toggle"
+									id="dropdownMenuReference" data-toggle="dropdown">Sort</button>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
+									<a class="dropdown-item" href="/communitieslogsort?sort=atoz">Name, A to Z</a>
+									<a class="dropdown-item" href="/communitieslogsort?sort=ztoa">Name, Z to A</a>
+									<a class="dropdown-item" href="/communitieslogsort?sort=distance">Distance, nearest
+										first</a>
+									<a class="dropdown-item" href="/communitieslogsort?sort=date">Date added, newest
+										first</a>
 								</div>
 							</div>
 						</div>
+											
 						<div class="row mb-5">
 
 							<%
@@ -65,34 +78,38 @@
 								<td colspan="7">No Data Found</td>
 							  </tr>
 							<% } %>
-							
-
-							
-
-
+						
 						</div>
-						<div class="row" data-aos="fade-up">
-							<div class="col-md-12 text-center">
-								<div class="site-block-27">
-									<ul>
-										<li><a href="#">&lt;</a></li>
-										<li class="active"><span>1</span></li>
-										<li><a href="#">2</a></li>
-										<li><a href="#">3</a></li>
-										<li><a href="#">4</a></li>
-										<li><a href="#">5</a></li>
-										<li><a href="#">&gt;</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
+												
 					</div>
 
 	
 					<div class="col-md-3 order-1 mb-5 mb-md-0">
 	
+						<%
+					if(typeData.length!=0){
+					var i=1;
+					typeData.forEach(function(data){
+					%>
+						
+					<% if (data.Type == 'individual') { %>
+						<div class="col text-center mt-2 bg-light pb-4">
+							<p class="lead">Add a community</p>
+							<a class="btn btn-primary" href="/addcommunity"><i class="fas fa-plus"></i> </a>
+						</div>
+					<% } else { %>
+						<div></div>
+					<% } %>
+
+					<%  i++; }) %>
+					<% } else{ %>
+						<tr>
+						<td colspan="7">No Items Found</td>
+						</tr>
+					<% } %>	
+
 	
-					<div class="border p-4 rounded mb-4">
+					<div class="border p-4 rounded mb-4 d-none d-md-block d-print-block">
 						<h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
 						<ul class="list-unstyled mb-0">
 						<li class="mb-1"><a href="/communitieslogcat?cat=books" class="d-flex"><span>Books</span> </a></li>
@@ -109,27 +126,7 @@
 						<li class="mb-1"><a href="/communitieslogcat?cat=hobbies" class="d-flex"><span>Hobbies</span></a></li>
 						<li class="mb-1"><a href="/communitieslogcat?cat=other" class="d-flex"><span>Other</span></a></li>
 						<a href="/communitiesloggedin"><button  type="button" class="btn btn-primary">Reset</button></a>
-					</div>
-
-					<div class="border p-4 rounded mb-4">
-						<div class="mb-4">
-							<h3 class="mb-3 h6 text-uppercase text-black d-block">Search Keyword
-							</h3>
-							<form action="searchcomlog" method="POST">
-								<div class="form-outline">
-									<input type="search" id="form1" class="form-control" name="search" />
-									<br />
-								</div>
-								<button type="submit" class="btn btn-primary">
-									<i class="fas fa-search"></i>
-								</button>
-								
-							</form>
-							<br />
-							<a href="/communitiesloggedin"><button  type="button" class="btn btn-primary">Reset</button></a>
-						</div>
-					</div>
-					
+					</div>					
 				</div>
 
 			</div>

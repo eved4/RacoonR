@@ -16,25 +16,57 @@
 					<div class="col-md-3 pt-0">
 						<div class="list-group list-group-flush account-settings-links">
 							
+							<%
+							if(typeData.length!=0){
+							var i=1;
+							typeData.forEach(function(data){
+							%>
+							
+							<% if (data.Type == 'individual') { %>
+								<a class="list-group-item list-group-item-action active" data-toggle="list"
+								href="#account-general">General</a>
+							<a class="list-group-item list-group-item-action" data-toggle="list"
+								href="#awards">Awards</a>
+							<a class="list-group-item list-group-item-action" data-toggle="list"
+								href="#favourites">Favourite Items</a>
+							<a class="list-group-item list-group-item-action" data-toggle="list"
+								href="#events">Favourite Events</a>
+							<a class="list-group-item list-group-item-action" data-toggle="list"
+								href="#communities">Communities</a>
+							<a class="list-group-item list-group-item-action" data-toggle="list" 
+								href="#youritems">Your items</a>
+							<a class="list-group-item list-group-item-action" data-toggle="list"
+								href="#notifications">Notifications</a>
+							<a class="list-group-item list-group-item-action" data-toggle="list"
+								href="#account-settings">Change password</a>
+							<% } else { %>
 							<a class="list-group-item list-group-item-action active" data-toggle="list"
 								href="#account-general">General</a>
 							<a class="list-group-item list-group-item-action" data-toggle="list"
 								href="#awards">Awards</a>
 							<a class="list-group-item list-group-item-action" data-toggle="list"
-								href="#favourites">Favourites</a>
+								href="#favourites">Favourite Items</a>
+							<a class="list-group-item list-group-item-action" data-toggle="list"
+								href="#events">Favourite Events</a>
 							<a class="list-group-item list-group-item-action" data-toggle="list"
 								href="#communities">Communities</a>
-							<a class="list-group-item list-group-item-action" data-toggle="list"
-								href="#events">Events</a>
-							<a class="list-group-item list-group-item-action" data-toggle="list" href="#youritems">Your
-								items</a>
+							<a class="list-group-item list-group-item-action" data-toggle="list" 
+								href="#yourevents">Your Events</a>
 							<a class="list-group-item list-group-item-action" data-toggle="list"
 								href="#notifications">Notifications</a>
 							<a class="list-group-item list-group-item-action" data-toggle="list"
 								href="#account-settings">Change password</a>
+							<% } %>
+						
 						</div>
 					</div>
 
+					<%  i++; }) %>
+							<% } else{ %>
+							  <tr>
+								<td colspan="7">No Data Found</td>
+							  </tr>
+							<% } %>
 
 					<div class="col-md-9">
 						<div class="tab-content ">
@@ -560,22 +592,26 @@
 								<div class="card-body pb-2" style="min-height: 800px;">
 
 									<h3>Change Password</h3>
-
-									<div class="form-group py-3">
-										<label class="form-label">Current password</label>
-										<input type="password" class="form-control">
-									</div>
-
-									<div class="form-group pb-2">
-										<label class="form-label">New password</label>
-										<input type="password" class="form-control">
-									</div>
-
-									<div class="form-group pb-2">
-										<label class="form-label">Repeat new password</label>
-										<input type="password" class="form-control">
-									</div>
-
+									<form action="changepassword" method="POST">
+										<div class="form-group py-3">
+											<label class="form-label">Current password</label>
+											<input type="password" 
+											class="form-control" required="required" name="current">
+										</div>
+										<div class="form-group pb-2">
+											<label class="form-label">New password</label>
+											<input type="password" class="form-control" required="required" name="new">
+										</div>
+										<div class="col-12 text-center">
+											<input
+											class="btn btn-sm btn-primary btn-block"
+											style="width: 100%; font-size: large"
+											style="border: none"
+											type="submit"
+											value="Save"
+											/>
+										</div>
+									</form>
 									
 								</div>
 
@@ -651,6 +687,44 @@
 												<% } %>
 											</div>
 										
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane fade" id="yourevents">
+								<div class="site-wrap" style="min-height: 200px;">
+									
+										<h3 class="pb-5 pt-4 text-center">Your Events</h3>
+										<div class="container">			
+											<div class="row">
+												<% if(youreventsData.length!=0){ var i=1; youreventsData.forEach(function(data){ %>
+
+												<div class="col-sm-6 col-lg-4 mb-4" data-aos="fade-up">
+												<div class="block-4 text-center border">
+													<div class="block-4-text p-4">
+													<h3>
+														<a href="/event?eventid=<%= data.EventID %> "><%=data.EventName %> </a>
+													</h3>
+													<br />
+													<p class="mb-0"><%=data.Description %></p>
+													<br />
+													<a
+														href="/deleteevents?eventid=<%= data.EventID %>"
+														class="btn btn-primary text-light"
+														title="Delete"
+														><i class="fas fa-trash-alt"></i>
+													</a>
+													</div>
+												</div>
+												</div>
+
+												<% i++; }) %> <% } else{ %>
+												<tr>
+												<td colspan="7">You do not have any items yet</td>
+												</tr>
+												<% } %>
+											</div>
+										</div>								
 									</div>
 								</div>
 							</div>
