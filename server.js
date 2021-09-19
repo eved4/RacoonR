@@ -14,6 +14,7 @@ var express = require('express'),
   authRouter = require('./routes/auth'),
   postcodes = require('node-postcodes.io'),
   path = require('path'),
+  { check, validationResult } = require('express-validator'),
   NodeGeocoder = require('node-geocoder');
 //passport = require('./config/passport/passport');
 
@@ -416,6 +417,7 @@ app.get('/loginfailed', (req, res, next) => {
 //authenticate user
 app.post(
   '/login',
+  [check('email', 'Email is not valid').isEmail().normalizeEmail()],
   passport.authenticate('local-login', {
     successRedirect: '/browseloggedin',
     failureRedirect: '/login',
@@ -431,6 +433,7 @@ app.get('/register', (req, res, next) => {
 //authenticate user
 app.post(
   '/register',
+  [check('email', 'Email is not valid').isEmail().normalizeEmail()],
   passport.authenticate('local-signup', {
     successRedirect: '/browseloggedin',
     failureRedirect: '/register',
@@ -978,10 +981,13 @@ app.get('/eventsloggedin', isLoggedIn, (req, res, next) => {
   var user = req.session.passport.user;
   //var sql = `SELECT events.*, users.GeoLocation FROM events INNER JOIN users ON events.Author = users.UserID WHERE ST_Distance((SELECT Geolocation FROM users WHERE UserID = events.Author), (SELECT GeoLocation FROM users WHERE users.UserID = ${user})) <= 100 AND events.Author != ${user} AND events.Date >= NOW() ORDER BY events.Date`;
   var sql = `SELECT events.*, users.GeoLocation FROM events INNER JOIN users ON events.Author = users.UserID WHERE ST_Distance((SELECT Geolocation FROM users WHERE UserID = events.Author), (SELECT GeoLocation FROM users WHERE users.UserID = ${user})) <= 0.1 AND Date > NOW() ORDER BY Date`;
-
-  db.query(sql, function (err, data, fields) {
+  var usersql = `SELECT Type FROM users WHERE UserID =${user}`;
+  db.query(usersql, function (err, typedata, fields) {
     if (err) throw err;
-    res.render('eventsloggedin', { title: 'Event List', eventData: data });
+    db.query(sql, function (err, data, fields) {
+      if (err) throw err;
+      res.render('eventsloggedin', { title: 'Event List', eventData: data, typeData: typedata });
+    });
   });
 });
 

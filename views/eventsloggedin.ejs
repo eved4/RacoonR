@@ -26,10 +26,19 @@
                 </div>
               </div>
 
+              <% if(typeData.length!=0){ var i=1; typeData.forEach(function(data){ %> <% if
+              (data.Type == 'organisation') { %>
               <div class="col-12 text-center mt-2 bg-light pb-4">
                 <p class="lead">Add an event</p>
                 <a class="btn btn-primary" href="/addevent"><i class="fas fa-plus"></i> </a>
               </div>
+              <% } else { %>
+              <div></div>
+              <% } %> <% i++; }) %> <% } else{ %>
+              <tr>
+                <td colspan="7">No Items Found</td>
+              </tr>
+              <% } %>
 
               <div class="row mb-5">
                 <% if(eventData.length!=0){ var i=1; eventData.forEach(function(data){ %>
