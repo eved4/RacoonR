@@ -103,7 +103,6 @@ app.use('/auth', authRouter);
 app.set('views', './views');
 app.set('view engine', 'ejs');
 
-// Let's see what happens when this is commented
 //app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(bodyParser.json());
 
@@ -166,13 +165,7 @@ app.get('/browselogsort', isLoggedIn, (req, res, next) => {
 
 app.get('/browsemap', isLoggedIn, (req, res, next) => {
   var sql = `SELECT GeoLocation FROM users WHERE UserID=${req.session.passport.user}`;
-
-  //var proxsql = `SELECT * FROM \`items\` WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user}`;
   var proxsql = `SELECT items.*, users.GeoLocation FROM items INNER JOIN users ON items.UserID = users.UserID WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 100 AND \`items\`.\`UserID\` != ${req.session.passport.user}  AND items.Type='offering'`;
-  /*db.query(sql, function (err, data, fields) {
-    if (err) throw err;
-    res.render('browsemap', { title: 'Item List', itemData: data });
-  });*/
   db.query(sql, function (err, userData, fields) {
     db.query(proxsql, function (err, itemData, fields) {
       if (err) throw err;
@@ -567,7 +560,7 @@ app.get('/deleteitems', isLoggedIn, (req, res, next) => {
   var sql = `DELETE FROM items WHERE ItemID = ?`;
   db.query(sql, ItemID, function (err, data, fields) {
     if (err) {
-      console.log('You Item does not exist');
+      console.log('Your Item does not exist');
     }
     res.redirect('/account');
   });
@@ -578,7 +571,7 @@ app.get('/deleteevents', isLoggedIn, (req, res, next) => {
   var sql = `DELETE FROM events WHERE ItemID = ?`;
   db.query(sql, EventID, function (err, data, fields) {
     if (err) {
-      console.log('You event does not exist');
+      console.log('Your event does not exist');
     }
     res.redirect('/account');
   });

@@ -138,7 +138,7 @@ module.exports = function (passport) {
             if (rows.length) {
               bcrypt.compare(password, rows[0].Password, (err, result) => {
                 if (err) {
-                  console.log('That is the wrang password', rows[0]);
+                  console.log('That is the wrong password', rows[0]);
                   console.log(err, password);
                   return done(
                     null,
@@ -149,7 +149,6 @@ module.exports = function (passport) {
                     )
                   );
                 } else if (result) {
-                  console.log('>>>>HAZAAA<<<<');
                   req.session.loggedin = true;
                   req.session.name = email;
                   return done(null, rows[0]);
