@@ -165,7 +165,7 @@ app.get('/browselogsort', isLoggedIn, (req, res, next) => {
 
 app.get('/browsemap', isLoggedIn, (req, res, next) => {
   var sql = `SELECT GeoLocation FROM users WHERE UserID=${req.session.passport.user}`;
-  var proxsql = `SELECT items.*, users.GeoLocation FROM items INNER JOIN users ON items.UserID = users.UserID WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 100 AND \`items\`.\`UserID\` != ${req.session.passport.user}  AND items.Type='offering'`;
+  var proxsql = `SELECT items.*, users.GeoLocation FROM items INNER JOIN users ON items.UserID = users.UserID WHERE ST_Distance((SELECT \`Geolocation\` FROM \`users\` WHERE \`UserID\` = \`items\`.\`UserID\`), (SELECT \`GeoLocation\` FROM \`users\` WHERE \`users\`.\`UserID\` = ${req.session.passport.user})) <= 0.1 AND \`items\`.\`UserID\` != ${req.session.passport.user}  AND items.Type='offering'`;
   db.query(sql, function (err, userData, fields) {
     db.query(proxsql, function (err, itemData, fields) {
       if (err) throw err;

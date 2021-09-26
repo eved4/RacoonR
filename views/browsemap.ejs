@@ -72,7 +72,7 @@
 														<% if(itemData.length!=0){ itemData.forEach(function(data) {%>
 														  var ilat = parseFloat('<%= data.GeoLocation.x %>');
 														  var ilng = parseFloat('<%= data.GeoLocation.y %>');
-													      addMarker({ lat: ilat, lng: ilng }, `<a href="/offeritem?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><h3><%= data.Title %></h3><p>Description: <%= data.Description %></p></a>`, map);
+													      addMarker({ lat: ilat, lng: ilng }, `<a href="/offeritemloggedin?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><h3><%= data.Title %></h3><p>Description: <%= data.Description %></p></a>`, map);
 													    <%})}%>
 													  }
 								  
@@ -118,8 +118,8 @@
 									<div class="block-4 text-center border" style="height: 100%;">
 									  <div class="block-4-text p-4">
 																			
-										<h3><a href="/offeritem?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><%=data.Title %> </a></h3>
-										<a href="/offeritem?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><img src="<%=data.ImagePath %>" alt="Image placeholder"
+										<h3><a href="/offeritemloggedin?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><%=data.Title %> </a></h3>
+										<a href="/offeritemloggedin?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><img src="<%=data.ImagePath %>" alt="Image placeholder"
 															  class="img-fluid" loading="lazy"></a>
 										<br />
 									  </div>
