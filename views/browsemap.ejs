@@ -72,7 +72,7 @@
 														<% if(itemData.length!=0){ itemData.forEach(function(data) {%>
 														  var ilat = parseFloat('<%= data.GeoLocation.x %>');
 														  var ilng = parseFloat('<%= data.GeoLocation.y %>');
-													      addMarker({ lat: ilat, lng: ilng }, "<h3><%= data.Title %></h3><p>Description: <%= data.Description %></p>", map);
+													      addMarker({ lat: ilat, lng: ilng }, `<a href="/offeritem?itemid=<%= data.ItemID %>&category=<%= data.Category %>"><h3><%= data.Title %></h3><p>Description: <%= data.Description %></p></a>`, map);
 													    <%})}%>
 													  }
 								  

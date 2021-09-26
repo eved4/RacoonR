@@ -5,7 +5,6 @@ Running the test:
     - Run npm start
     - In a separate terminal navigate to the same directory
     - Run npm test
-
 */
 const chai = require('chai');
 var expect = require('chai').expect;
@@ -26,36 +25,10 @@ describe('GET /browse', () => {
 });
 
 describe('GET /browseLoggedIn without being logged in', () => {
-  it('should redirect or something, idk, 301?', function (done) {
+  it('should redirect, 301', function (done) {
     chai
       .request(serverUrl)
       .get('/browseloggedin')
-      .end(function (err, res) {
-        expect(res).to.have.status(200);
-        done();
-      });
-  });
-});
-
-describe('GET /browseLoggedIn without being logged in', () => {
-  it('should redirect or something, idk, 301?', function (done) {
-    chai
-      .request(serverUrl)
-      .get('/browseloggedin')
-      .end(function (err, res) {
-        expect(res).to.have.status(200);
-        done();
-      });
-  });
-});
-
-describe('GET /browseLoggedIn without being logged in', () => {
-  it('should redirect or something, idk, 301?', function (done) {
-    chai
-      .request(serverUrl)
-      .get('/browse')
-      .set('content-type', 'application/x-www-form-urlencoded')
-      .send({ myparam: 'test' })
       .end(function (err, res) {
         expect(res).to.have.status(200);
         done();
